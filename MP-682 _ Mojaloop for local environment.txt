@@ -1,0 +1,462 @@
+﻿MP-682 : Mojaloop for local environment
+
+
+We had 4 guides to follow:
+1. Mojaloop deployment guide
+2. Rob's guide:
+(seems to be for Linux )
+3. Onboarding from the mojaloop doc
+This is for running locally without Kubernetes, starting Mojaloop components/services as needed
+4. Mojaloop local deployment guide: https://github.com/modusintegration/mojaloop-local
+It uses "kind" and a local Kubernetes. It deploys the same mojaloop helm chart
+
+
+
+
+RESULTS:
+
+
+1. Mojaloop deployment guide
+Unusable. Uses too much memory
+DONE
+
+
+2. Rob's guide:
+(seems to be for Linux )
+Not yet tested
+Could be tested on a Ubuntu machine ( VM on gcloud or AWS or anything free ).
+        Ramiro
+
+
+3. Onboarding from the mojaloop doc
+   1. Damian is about to test running section 4 of the postman test setup ( payer FSP, payee FSP, Hub accounts ) and a transfer via GoldenPath
+
+
+4. Mojaloop local deployment guide: https://github.com/modusintegration/mojaloop-local
+        See log below in section “Local deployment with new guide” 
+
+
+1) Following step by step guide : https://mojaloop.io/documentation/deployment-guide:
+
+
+1. Installing Prerequisites using Local Setup for Mac
+* Kubernetes:  First installing Kubernetes CLI for mac users with no issues: 
+   * brew install kubernetes-cli
+   * Installing Kubernetes for Docker following the instructions in https://mojaloop.io/documentation/deployment-guide/local-setup-mac.html#11-kubernetes-installation-with-docker
+* Docker: Already installed
+* Installing Helm: brew install kubernetes-helm (https://github.com/helm/helm)
+* Postman: already installed
+
+
+2. Kubernetes set up:
+* Installing kubernetes dashboard with -> 
+kubectl create -f https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.1/src/deploy/recommended/kubernetes-dashboard.yaml
+* Start proxy for UI of the dashboard 
+kubectl proxy ui
+* After generating the token as the instructions says, access to the dashboard was successful
+
+
+3. Helm configuration: 
+* First installing Helm in my local machine as part of step 1 prerequisites
+* Next step is doing “helm init” but is not working with the latest version of helm that gets installed doing  “brew install kubernetes-helm”. 
+So you need to install helm v2 to proceed
+* The solution here was to use another machine that already had helm installed with an older version (v2). And run “helm init”.
+* Now using helm v2, we can add the mojaloop helm repository using-> helm repo add mojaloop http://mojaloop.io/helm/repo/
+* Then adding additional repositories as the guide says->
+helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubator
+helm repo add kiwigrid https://kiwigrid.github.io
+helm repo add elastic https://helm.elastic.co
+* Installing nginx for load balance and external access -> 
+helm --namespace kube-public install stable/nginx-ingress
+4. Mojaloop:
+* Following all instructions in https://mojaloop.io/documentation/deployment-guide/#51-mojaloop-helm-deployment deployed locally all services
+* The deploy could be verified as the guide stated https://mojaloop.io/documentation/deployment-guide/#52-verifying-mojaloop-deployment
+*  After finishing the local installation, the services were consuming 14GB of RAM, so the laptop was very slow. We achieved to test some of the postman collections that are provided on the guide, but it was hard because of the slowness of the environment, so this will not be a maintainable solution to have a local mojaloop running with this approach. 
+
+
+
+
+RESULT: It works but it's not useful
+Alternatives: we could get a VM anywhere to run this.
+        Can we get any "free" VMs to play with?
+Other idea: review the config so we could use "less resources"?
+        ( We're already using the local kubernetes cluster with 1 node )
+
+
+Minikube didn't work for Damian
+        https://github.com/modusintegration/mojaloop-fxp-scheme-adapter/blob/master/docs/ml-minikube.md
+
+
+
+
+
+
+
+
+
+
+
+
+Next steps
+
+
+Following sequence diagram of the Initial Go Live Solution (https://modusbox.atlassian.net/wiki/spaces/mbxFXP/pages/435389701/FXP+Settlement+Flow), we can see that we only have three planned interactions between TMF and Mojaloop Hub. 
+
+
+Step 6: Settlement window recorded. The positions are reset at the hub and TMF. Settlement window reservation total per currency pair per DFSP recorded as Reserved in Ledgers at the Hub.
+
+
+Step 11: Update outbound settlement ledgers at Hub.
+
+
+Step 14: Update inbound Settlement Ledgers at Hub.
+
+
+First approach:
+
+
+1. Identify what api calls we need for each step from TMF.
+2. Running locally central-settlement api (https://github.com/mojaloop/central-settlement#api) and compare with TMF needs.
+In case that this api supplies the information that TMF needs, we can conclude this task. 
+
+
+Any other case, we will need to identify what other repositories/api are needed, and try going with the same approach as central-settlement (docker-compose local) or try again using microk8 or minukube to install the full mojaloop hub installation, and start using the postman collections provided.
+
+
+
+
+
+
+
+
+
+
+//////////////
+
+
+Rob's guide:
+(seems to be for Linux )
+
+
+1. Install microk8s stable version with tiller installed
+
+
+$snap install microk8s --classic --channel=1.14/stable
+
+
+2. enable microk8s
+
+
+$sudo microk8s.start
+
+
+$microk8s.status --wait-ready
+
+
+3. install dns dashboard
+
+
+$microk8s.enable dns dashboard
+
+
+4. search where dashboard is running, kubernetes-dashboard is running in this case on 10.152.183.94
+
+
+$microk8s.kubectl get all --all-namespaces
+
+
+Output like this
+
+
+NAMESPACE     NAME                                                    TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                      AGE
+default       service/kubernetes                                      ClusterIP   10.152.183.1     <none>        443/TCP                      26m
+kube-system   service/heapster                                        ClusterIP   10.152.183.52    <none>        80/TCP                       24m
+kube-system   service/kube-dns                                        ClusterIP   10.152.183.10    <none>        53/UDP,53/TCP                24m
+kube-system   service/kubernetes-dashboard                            ClusterIP   10.152.183.94    <none>        443/TCP        
+
+
+5. In order to login you need to get dashboard token
+
+
+5.1 Getting token information
+
+
+$token=$(microk8s.kubectl -n kube-system get secret | grep default-token | cut -d " " -f1)
+
+
+5.2 Showing token information
+
+
+$microk8s.kubectl -n kube-system describe secret $token
+
+
+Output must be like this
+Name:         default-token-tblzm
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  kubernetes.io/service-account.name: default
+             kubernetes.io/service-account.uid: 2caffbe4-f029-11e9-aab6-9cb6d0c46f3b
+Type:  kubernetes.io/service-account-token
+Data
+====
+ca.crt:     1115 bytes
+namespace:  11 bytes
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJkZWZhdWx0LXRva2VuLXRibHptIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImRlZmF1bHQiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiIyY2FmZmJlNC1mMDI5LTExZTktYWFiNi05Y2I2ZDBjNDZmM2IiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06ZGVmYXVsdCJ9.i4I1IPJ8GDsB2L7LxsmkD2Ipd5Eidl3UQhkubmzSHOTkRFM_APGLVn7S_jHgio8hv8FpOK2bXta7fpQWl6uhvTS_jZq75ALsoh1NbzjqePgQ17FIVb_O43OiRNxDmqFfZDPBu8csNK2X9L5edUHlCz-sBvmGlU5WWOXGbmkMSQfh91iiCc7rQLaB6skDBNyr9Gqd9z_mbU4KoFwAaEtPTrUhWheBD24s_dTdv8MLI2bpzSAlBXrkuWm7CXCdx6o7HauMCoshmTbbbGDtN29LLuenlC0aJ2PNlhNuEju52uc7M08YYyEHoF6uv-AQSlewJ17T5OGl3i7APSu8JNI6sQ
+
+
+6. login on k8s dashboard by open on browser following link and introducing the token value described on 5.1
+
+
+https://10.152.183.94
+
+
+7. Install helm
+
+
+$sudo snap install helm --classic
+
+
+8. Deploy ML
+
+
+8.1 Create mojaloop namespace
+
+
+$microk8s.kubectl config current-context
+
+
+Output
+
+
+microk8s
+
+
+$microk8s.kubectl config set-context microk8s --namespace=mojaloop
+
+
+Output
+
+
+Context "microk8s" modified.
+
+
+8.2 Deploy
+
+
+$helm install --debug --namespace=mojaloop --name=test0 --repo=http://mojaloop.io/helm/repo mojaloop
+
+
+9. Delete deploy
+
+
+$helm-full --kubeconfig microk8s.config delete --purge test0
+
+
+/////////
+
+
+Onboarding guide:
+
+
+https://github.com/mojaloop/ml-api-adapter/blob/master/Onboarding.md
+
+
+////
+
+
+New local deployment
+
+
+https://github.com/modusintegration/mojaloop-local
+
+
+///////////////// Local deployment with new guide //////////////
+Ramiro. 2019/11/25
+
+
+I’m trying a local kubernetes cluster on the docker for mac. I did not run Kind because it’s WIP and it’s targeted for more advanced uses like multi-node cluster.
+
+
+
+
+How to install helm v2
+
+
+From on Sep 20, 2018
+
+
+# Install helm v3
+brew install kubernetes-helm
+# unlink
+brew unlink kubernetes-helm
+# install helm 2.16.1
+brew install https://raw.githubusercontent.com/Homebrew/homebrew-core/2fbed24cb83d0ecc69b8004e69027e0d8eed5f9d/Formula/kubernetes-helm.rb
+# switch to 2.16.1
+brew switch kubernetes-helm 2.16.1
+# init helm
+helm init
+
+
+[....]
+Adding stable repo with URL: https://kubernetes-charts.storage.googleapis.com
+Adding local repo with URL: http://127.0.0.1:8879/charts
+$HELM_HOME has been configured at /Users/ramiro/.helm.
+
+
+Tiller (the Helm server-side component) has been installed into your Kubernetes Cluster.
+
+
+Please note: by default, Tiller is deployed with an insecure 'allow unauthenticated users' policy.
+To prevent this, run `helm init` with the --tiller-tls-verify flag.
+For more information on securing your installation see: https://docs.helm.sh/using_helm/#securing-your-helm-installation
+
+
+
+
+/// installing mojaloop following local guide
+➜  ~ kubectl -n kube-system wait --for=condition=Ready pod -l name=tiller --timeout=300s
+pod/tiller-deploy-dc4f6cccd-6mggh condition met
+➜  ~
+
+
+➜  ~ kubectl -n kube-system wait --for=condition=Ready pod -l name=tiller --timeout=300s
+pod/tiller-deploy-dc4f6cccd-6mggh condition met
+➜  ~ kubectl create serviceaccount -n kube-system tiller
+serviceaccount/tiller created
+➜  ~ kubectl create clusterrolebinding tiller-cluster-admin --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+
+
+clusterrolebinding.rbac.authorization.k8s.io/tiller-cluster-admin created
+➜  ~ kubectl --namespace kube-system patch deploy tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'
+
+
+deployment.extensions/tiller-deploy patched
+
+
+
+
+➜  ~ helm install --debug --name=test --repo=https://mojaloop.github.io/mojaloop-local/repo mojaloop-local
+[debug] Created tunnel using local port: '60991'
+
+
+[debug] SERVER: "127.0.0.1:60991"
+
+
+[debug] Original chart version: ""
+Error: Looks like "https://mojaloop.github.io/mojaloop-local/repo" is not a valid chart repository or cannot be reached: Failed to fetch https://mojaloop.github.io/mojaloop-local/repo/index.yaml : 404 Not Found
+
+
+:(
+
+
+Hm… back to the official doc to see what’s going on.
+First I need the dashboard installed
+➜  ~ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.1/src/deploy/recommended/kubernetes-dashboard.yaml
+secret/kubernetes-dashboard-certs created
+serviceaccount/kubernetes-dashboard created
+role.rbac.authorization.k8s.io/kubernetes-dashboard-minimal created
+rolebinding.rbac.authorization.k8s.io/kubernetes-dashboard-minimal created
+deployment.apps/kubernetes-dashboard created
+service/kubernetes-dashboard created
+
+
+
+
+To get the token to log in:
+
+
+kubectl -n kube-system get secrets | grep dashboard-token
+ In my machine:
+kubectl -n kube-system describe secrets/kubernetes-dashboard-token-lmvxm
+
+
+
+
+HELM
+helm repo add mojaloop http://mojaloop.io/helm/repo/
+Works.
+
+
+
+
+
+
+ helm install --debug --name=test --repo=https://mojaloop.github.io/mojaloop-local/repo mojaloop-local
+
+
+Doesn’t work.
+
+
+Trying to locally publish the repo
+➜  repo git:(master) ls -l
+total 2192
+-rwxr-xr-x  1 ramiro  staff    3075 Nov 25 08:55 index.yaml
+-rw-r--r--  1 ramiro  staff  393989 Nov 25 08:55 mojaloop-local-0.0.1.tgz
+-rw-r--r--  1 ramiro  staff  357382 Nov 25 08:55 mojaloop-local-0.0.19.tgz
+-rw-r--r--  1 ramiro  staff  357732 Nov 25 08:55 mojaloop-local-0.0.20.tgz
+➜  repo git:(master) helm serve --repo-path .
+Regenerating index. This may take a moment.
+Now serving you on 127.0.0.1:8879
+
+
+And then deploy using:
+helm install --debug --name=test --repo=http://localhost:8879 mojaloop-local
+
+
+
+
+
+
+ANd it seems to be coming up:
+➜  ~ kubectl get pods
+NAME                                                            READY   STATUS              RESTARTS   AGE
+local-test-ingress-controller-567f8b7bb7-v55n9                  0/1     ContainerCreating   0          26s
+local-test-ingress-default-backend-5976677f75-p7hr6             1/1     Running             0          26s
+test-account-lookup-service-746f75dd55-gvbwl                    0/1     Init:0/1            0          26s
+test-account-lookup-service-admin-685746fd4c-dnl2w              0/1     Init:0/2            0          26s
+test-centraleventprocessor-5bc5cbdf76-xx6tr                     0/1     Init:0/2            0          26s
+test-centralledger-handler-admin-transfer-6c7bd5b564-4zzzt      0/1     Init:0/2            0          26s
+test-centralledger-handler-timeout-78c69f87d-txwxg              0/1     Init:0/2            0          26s
+test-centralledger-handler-transfer-fulfil-78bfff4d55-q7n8k     0/1     Init:0/2            0          24s
+test-centralledger-handler-transfer-get-6765cf7989-lmlxd        0/1     Init:0/2            0          25s
+test-centralledger-handler-transfer-position-7c8f4d8bb6-kvf9q   0/1     Init:0/2            0          24s
+test-centralledger-handler-transfer-prepare-6fb66d66fd-bffgp    0/1     Init:0/2            0          26s
+test-centralledger-mysql-0                                      0/1     Init:0/1            0          26s
+test-centralledger-service-87458b975-dcsrm                      0/1     Init:0/2            0          26s
+test-centralsettlement-b5d77564c-pvkwv                          0/1     Init:0/1            0          26s
+test-kafka-0                                                    0/1     ContainerCreating   0          26s
+test-ml-api-adapter-handler-notification-65c56c698f-hvmdc       0/1     Init:0/1            0          25s
+test-ml-api-adapter-service-75f5b6455c-plc6f                    0/1     Init:0/1            0          26s
+test-mongodb-64b9969c55-r4sdz                                   0/1     ContainerCreating   0          25s
+test-quoting-service-997dc6846-722fp                            0/1     Init:0/1            0          25s
+test-simulator-864957d68-4z89d                                  0/1     ContainerCreating   0          24s
+test-transaction-requests-service-776f9475c-h8rkj               0/1     ContainerCreating   0          24s
+test-zookeeper-0                                                0/1     ContainerCreating   0          26s
+➜  ~
+
+
+So this deploys:
+* ALS
+* Kafka
+* All the kafka handlers ( centralledfer-handler-* )
+* centralledger-service
+* centralsettlement ( the settlements ? )
+* What are these?
+* centraleventprocessor
+* ml-api-adapter-handler-notification
+* ml-api-adapter-service
+* mongodb what for??
+* quoting-service this handles the /quotes operations?
+* transaction-requests-service ???
+
+
+
+
+
+
+
+
+
+
+IT seems you can deploy several charts
+probably this is the one to use? https://github.com/modusintegration/mojaloop-local/blob/master/repo/mojaloop-local-0.0.20.tgz
