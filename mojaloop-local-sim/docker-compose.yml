@@ -1,0 +1,279 @@
+version: "3.7"
+
+networks:
+  cl-mojaloop-net:
+    name: cl-mojaloop-net
+
+services:
+  central-ledger:
+    image: mojaloop/central-ledger:v8.4.0
+    container_name: cl_central-ledger
+    command:
+      - "sh"
+      - "-c"
+      - "sh /opt/wait-for/wait-for-central-ledger.sh && node src/api/index.js"
+    ports:
+      - "3001:3001"
+    volumes:
+       - ./docker/central-ledger/default.json:/opt/central-ledger/config/default.json
+       - ./docker/wait-for:/opt/wait-for
+    environment:
+      - LOG_LEVEL=info
+      - CLEDG_SIDECAR__DISABLED=true
+      - CLEDG_MONGODB__DISABLED=false
+    networks:
+      - cl-mojaloop-net
+    depends_on:
+      - mysql
+      - kafka
+    healthcheck:
+      test: ["CMD", "bash", "-c" ,"apk --no-cache add curl", ";", "curl", "http://localhost:3001/health"]
+      timeout: 20s
+      retries: 10
+      interval: 30s
+
+  quoting-service:
+    image: "mojaloop/quoting-service:v8.4.0-snapshot"    
+    container_name: qs_quoting-service
+    networks:
+      - cl-mojaloop-net   
+    depends_on:
+      - mysql      
+    ports:
+      - "3002:3002"
+    volumes:
+      - ./docker/quoting-service/default.json:/opt/quoting-service/config/default.json
+
+  ml-api-adapter:
+    image: mojaloop/ml-api-adapter:v8.4.1
+    container_name: cl_ml-api-adapter
+    command:
+      - "sh"
+      - "-c"
+      - "sh /opt/wait-for/wait-for-ml-api-adapter.sh && node src/api/index.js"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./docker/ml-api-adapter/default.json:/opt/ml-api-adapter/config/default.json
+      - ./docker/wait-for:/opt/wait-for
+    environment:
+      - LOG_LEVEL=info
+    networks:
+      - cl-mojaloop-net
+    depends_on:
+      - kafka
+    healthcheck:
+      test: ["CMD", "sh", "-c" ,"apk --no-cache add curl", ";", "curl", "http://localhost:3000/health"]
+      timeout: 20s
+      retries: 10
+      interval: 30s
+
+  mysql:
+    image: mysql/mysql-server
+    container_name: cl_mysql
+    # Disable logging as it is far too verbose for debugging locally
+    logging:
+      driver: none
+    ports:
+      - "3307:3306"
+    volumes:
+      # Note: this fixes the permissions issue, but docker-compose up will fail on first attempt
+      - ./docker/sql-init/:/docker-entrypoint-initdb.d/
+    environment:
+      - MYSQL_USER=${DBUSER:-central_ledger}
+      - MYSQL_PASSWORD=${DBPASS:-password}
+      - MYSQL_DATABASE=${DBUSER:-central_ledger}
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+    networks:
+      - cl-mojaloop-net
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "mysql"]
+      timeout: 20s
+      retries: 10
+      start_period: 40s
+      interval: 30s
+
+  simulator:
+    image: mojaloop/simulator:v8.3.1
+    container_name: cl_simulator
+    ports:
+      - "8444:8444"
+    environment:
+      - LOG_LEVEL=info
+      - TRANSFERS_ENDPOINT=http://ml-api-adapter:3000
+      - QUOTES_ENDPOINT=http://quoting-service:3002
+      - PARTIES_ENDPOINT=http://account-lookup-service:4002
+      - TRANSFERS_FULFIL_RESPONSE_DISABLED=false
+    networks:
+      - cl-mojaloop-net
+    healthcheck:
+      test: ["CMD", "sh", "-c" ,"apk --no-cache add curl", ";", "curl", "http://localhost:8444/health"]
+      timeout: 20s
+      retries: 10
+      interval: 30s
+
+  kafka:
+    image: johnnypark/kafka-zookeeper:2.3.0
+    container_name: cl_kafka
+    # Disable logging as it is far too verbose for debugging locally
+    logging:
+      driver: none
+    volumes:
+      - ./docker/kafka/:/opt/kafka_2.12-2.3.0/config/
+    ports:
+      - "2181:2181"
+      - "9092:9092"
+    environment:
+      - ZOO_LOG4J_PROP=WARN
+    networks:
+      - cl-mojaloop-net
+    healthcheck:
+      test: ["CMD" ,"/opt/kafka_2.12-2.3.0/bin/kafka-broker-api-versions.sh","--bootstrap-server","localhost:9092"]
+      timeout: 20s
+      retries: 10
+      start_period: 40s
+      interval: 30s
+
+  central-settlement:
+    image: mojaloop/central-settlement:v8.3.0
+    container_name: cl_central-settlement
+    command:
+      - "sh"
+      - "-c"
+      - "sh /opt/wait-for/wait-for-central-settlement.sh && node src/server.js"    
+    networks:
+      - cl-mojaloop-net
+    depends_on:
+      - mysql
+      - kafka
+    ports:
+      - "3007:3007"
+    volumes:
+       - ./docker/central-settlement/default.json:/opt/central-settlement/config/default.json
+       - ./docker/wait-for:/opt/wait-for
+  
+  account-lookup-service:
+    image: mojaloop/account-lookup-service:v8.3.0
+    container_name: als_account-lookup-service
+    command:
+      - "sh"
+      - "-c"
+      - "sh /opt/wait-for/wait-for-account-lookup-service.sh && node src/index.js server"
+    ports:
+      - "4001:4001"
+      - "4002:4002"
+    environment:
+      - LOG_LEVEL=debug
+    networks:
+      - cl-mojaloop-net
+    depends_on:
+      - mysql-als
+      - central-ledger
+    volumes:
+      - ./docker/account-lookup-service/default.json:/opt/account-lookup-service/config/default.json
+      - ./docker/wait-for:/opt/wait-for
+    healthcheck:
+      test: ["CMD", "sh", "-c" ,"apk --no-cache add curl", ";", "curl", "http://localhost:4001/health"]
+      timeout: 20s
+      retries: 10
+      interval: 60s
+
+  mysql-als:
+    image: mysql/mysql-server
+    container_name: cl_mysql_als
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./docker/sql-als-init/:/docker-entrypoint-initdb.d/
+    environment:
+      - MYSQL_USER=${DBUSER:-account_lookup}
+      - MYSQL_PASSWORD=${DBPASS:-password}
+      - MYSQL_DATABASE=${DBUSER:-account_lookup}
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+    networks:
+      - cl-mojaloop-net
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "mysql-als"]
+      timeout: 20s
+      retries: 10
+      start_period: 40s
+      interval: 30s
+
+## DFSP 1      
+  dfsp1-backend:
+    image: "mojaloop/sdk-mock-dfsp-backend:v8.3.0"
+    env_file: ./dfsp1/backend.env
+    ports:
+      - "9000:3000"
+    environment:
+      - OUTBOUND_ENDPOINT=http://dfsp1-scheme-adapter:5002
+    networks:
+      - cl-mojaloop-net
+    depends_on:
+      - dfsp1-scheme-adapter
+    restart: always
+    
+  dfsp1-scheme-adapter:
+    image: "mojaloop/sdk-scheme-adapter:v8.6.0"
+    env_file: ./dfsp1/scheme-adapter.env
+    ports:
+      - "5000:5000"
+      - "5002:5002"
+    environment:
+      - ALS_ENDPOINT=account-lookup-service:4002
+      - QUOTES_ENDPOINT=quoting-service:3002
+      - TRANSFERS_ENDPOINT=ml-api-adapter:3000
+      - BACKEND_ENDPOINT=dfsp1-backend:3000
+      - CACHE_HOST=dfsp1-redis
+      - DFSP_ID=citibank
+    networks:
+      - cl-mojaloop-net
+    depends_on:
+      - dfsp1-redis
+    restart: always
+    
+  dfsp1-redis:
+    image: "redis:5.0.4-alpine"
+    networks:
+      - cl-mojaloop-net
+    restart: always
+
+ ## DFSP 2
+  dfsp2-backend:
+    image: "mojaloop/sdk-mock-dfsp-backend:v8.3.0"
+    env_file: ./dfsp2/backend.env
+    ports:
+      - "10000:3000"
+    environment:
+      - OUTBOUND_ENDPOINT=http://dfsp2-scheme-adapter:5002
+    networks:
+      - cl-mojaloop-net
+    depends_on:
+      - dfsp2-scheme-adapter
+    restart: always
+      
+  dfsp2-scheme-adapter:
+    image: "mojaloop/sdk-scheme-adapter:v8.6.0"
+    env_file: ./dfsp2/scheme-adapter.env
+    ports:
+      - "7000:5000"
+      - "7002:5002"
+    environment:
+      - ALS_ENDPOINT=account-lookup-service:4002
+      - QUOTES_ENDPOINT=quoting-service:3002
+      - TRANSFERS_ENDPOINT=ml-api-adapter:3000
+      - BACKEND_ENDPOINT=dfsp2-backend:3000
+      - CACHE_HOST=dfsp2-redis
+      - DFSP_ID=bankofamerica
+    networks:
+      - cl-mojaloop-net
+    depends_on:
+      - dfsp2-redis
+    restart: always
+      
+  dfsp2-redis:
+    image: "redis:5.0.4-alpine"
+    networks:
+      - cl-mojaloop-net
+    restart: always
+    
