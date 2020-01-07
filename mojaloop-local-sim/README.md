@@ -47,9 +47,7 @@ docker-compose start  account-lookup-service
 npm install -g newman
 ```
 
-* Run the pre-loading data
-
-    * go to postman and run 
+* cd to the postman folder
 
 ```
 sh scripts/setupDockerCompose-HubAccount.sh
@@ -133,31 +131,86 @@ OSS-New-Deployment-FSP-Setup
 
 
 ### Create a CitiBank DFSP (use SDK + backend)
+
+It will create a new participant with its endpoints and some init data. For this case, name, position, and limits will be
+
+| Parameter | Value |
+|-----------|---------|
+| `name`       | `citibank`  |
+| `currency`       | `USD`  |
+| `limit.type`       | `NET_DEBIT_CAP` |
+| `limit.value`   | `1000000` |
+| `initialPosition`     | `0` |`
+
 ```
-$ sh scripts/setupDockerCompose-DFSP-CITIBANK.sh
+$ sh scripts/setupDockerCompose-DFSP-CITIBANK.sh`
 ```
 
 ### Create a Bank Of America DFSP (use SDK + backend)
+
+It will create a new participant with its endpoints and some init data. For this case, name, position, and limits will be
+
+| Parameter | Value |
+|-----------|---------|
+| `name`       | `bankofamerica`  |
+| `currency`       | `USD`  |
+| `limit.type`       | `NET_DEBIT_CAP` |
+| `limit.value`   | `1000000` |
+| `initialPosition`     | `0` |`
+
 ```
 $ sh scripts/setupDockerCompose-DFSP-BANK-OF-AMERICA.sh
 ```
 
 ### Create a Simulator DFSP (implement mojaloop api)
+
+It will create a new participant with its endpoints and some init data. For this case, name, position, and limits will be
+
+| Parameter | Value |
+|-----------|---------|
+| `name`       | `payeefsp`  |
+| `currency`       | `USD`  |
+| `limit.type`       | `NET_DEBIT_CAP` |
+| `limit.value`   | `1000000` |
+| `initialPosition`     | `0` |`
+
 ```
 $ sh scripts/setupDockerCompose-DFSP-SIMULATOR.sh
 ```
 
 ### Add MSISDN (123456789) for CitiBank DFSP
+
+Register a new MSISDN for this dfsp with this initial data
+
+| Parameter | Value |
+|-----------|---------|
+| `currency`       | `USD`  |
+
+
 ```
 $ sh scripts/setupDockerCompose-DFSP-CITIBANK-MSISDN.sh
 ```
 
 ### Add MSISDN (987654321) for Bank Of America DFSP
+
+Register a new MSISDN for this dfsp with this initial data
+
+| Parameter | Value |
+|-----------|---------|
+| `currency`       | `USD`  |
+
 ```
 $ sh scripts/setupDockerCompose-DFSP-BANK-OF-AMERICA-MSISDN.sh
 ```
 
 ### Add MSISDN (333333333) for Simulator
+
+Register a new MSISDN for this dfsp with this initial data
+
+| Parameter | Value |
+|-----------|---------|
+| `currency`       | `USD`  |
+
 ```
 $ sh scripts/setupDockerCompose-DFSP-SIMULATOR-MSISDN.sh
 ```
