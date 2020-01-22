@@ -1,0 +1,46 @@
+apiVersion: v1
+data:
+  default.json: |
+    {
+        "HOSTNAME": "http://{{ .Release.Name }}-quoting-service",
+        "LISTEN_ADDRESS": "0.0.0.0",
+        "PORT": {{ .Values.quotingService.ports.containerPort }},
+        "AMOUNT": {
+          "PRECISION": 18,
+          "SCALE": 4    
+          }, 
+          {{- with .Values.centralLedger }}
+          "DATABASE": {
+            "DIALECT": "mysql",
+            "HOST": {{ .db.host | quote }},
+            "PORT": {{ .db.port }},
+            "USER": {{ .db.user | quote }},
+            "PASSWORD": {{ .db.password | quote }},
+            "SCHEMA": {{ .db.schema | quote }},
+            "POOL_MIN_SIZE": 10,
+            "POOL_MAX_SIZE": 10,
+            "ACQUIRE_TIMEOUT_MILLIS": 30000,
+            "CREATE_TIMEOUT_MILLIS": 30000,
+            "DESTROY_TIMEOUT_MILLIS": 5000,
+            "IDLE_TIMEOUT_MILLIS": 30000,
+            "REAP_INTERVAL_MILLIS": 1000,
+            "CREATE_RETRY_INTERVAL_MILLIS": 200,
+            "DEBUG": false
+            },
+          {{- end }}
+          "SWITCH_ENDPOINT": "http://{{ .Release.Name }}-central-ledger:{{ .Values.centralLedger.ports.containerPort }}",
+          "ERROR_HANDLING":{
+            "includeCauseExtension": false,
+            "truncateCause": true
+            },
+        "SIMPLE_ROUTING_MODE": false 
+    }
+
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2019-12-26T11:05:07Z"
+  name: quoting-service-configmap
+  namespace: default
+  resourceVersion: "76083"
+  selfLink: /api/v1/namespaces/default/configmaps/quoting-service-configmap
+  uid: fe5c5419-740d-490e-bd98-0d667c098c1d

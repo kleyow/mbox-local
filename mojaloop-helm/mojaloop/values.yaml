@@ -1,0 +1,164 @@
+accountLookUp:
+  image:
+    name: mojaloop/account-lookup-service
+    version: v8.3.0
+  ports:
+    containerApiPort: 4002
+    nodeApiPort: 30402
+    containerAdminPort: 4001
+    nodeAdminPort: 30401
+  db:
+    user: "account_lookup"
+    password: "password"
+    host: "mysql-als"
+    port: 3306
+    schema: "account_lookup"
+    enabled: true
+
+centralLedger:
+  image:
+    name: mojaloop/central-ledger
+    version: v8.4.0
+  ports:
+    containerPort: 3001
+    nodePort: 30001
+  config:
+    functionality : "{{functionality}}"
+    action: "{{action}}"
+    participantName: "{{participantName}}"
+  db:
+    user: "central_ledger"
+    password: "password"
+    host: "mysql"
+    port: 3307
+    schema: "central_ledger"
+    enabled: true
+
+    
+centralSettlement:
+  image:
+    name: mojaloop/central-settlement
+    version: v8.3.0
+  ports:
+    containerPort: 3007
+    nodePort: 30007
+  config:
+    functionality : "{{functionality}}"
+    action: "{{action}}"
+
+mlApiAdapter:
+  image:
+    name:  mojaloop/ml-api-adapter
+    version: v8.4.1
+  ports:
+    containerPort: 3000
+    nodePort: 30000
+  config:
+    functionality : "{{functionality}}"
+    action: "{{action}}"
+
+quotingService:
+  image:
+    name:  mojaloop/quoting-service
+    version: v8.4.0-snapshot
+  ports:
+    containerPort: 3002
+    nodePort: 30002
+
+#ex citibank
+dfsp1:
+  name: citibank
+  image:
+    name:  mojaloop/sdk-mock-dfsp-backend
+    version: v8.3.0
+  ports:
+    port: 9000
+    containerPort: 3000
+    nodePort: 30900
+  config:
+    autoAcceptParty: "true"
+    autoAcceptQuotes: "true"
+    caCertPath: "./secrets/cacert.pem"
+    checkIlp: "false"
+    dfspId: "citibank"
+    enableOAuthTokenEndpoint: "false"
+    enableTestFeature: "false"
+    expirySeconds: 6000
+    ilpSecret: "Quaixohyaesahju3thivuiChai5cahng"
+    inboundListPort: 5000
+    inboundMutualTlsEnabled: "false"
+    jwsSign: "false"
+    jwsSigningKeyPath: "/jwsSigningKey.key"
+    jwsVerificationKeysDirectory: "/jwsVerificationKeys"
+    logIndent: 0
+    mutualTlsEnabled: "false"
+    oauthClientKey: ""
+    oauthClientSecret: ""
+    oauthRefreshSeconds: 3600
+    oauthTokenEndpoint: ""
+    oauthTokenEndpointClientKey: "test-client-key"
+    oauthTokenEndpointClientSecret: "test-client-secret"
+    outboundListenPort: 5002
+    outboundMutualTlsEnabled: "false"
+    rejectExpiredQuoteResponse: "false"
+    rejectExpiredTransfersFulfils: "false"
+    rejectTransfersOnExpiredQuotes: "false"
+    schemeName: "default"
+    serverCertPath:  "./secrets/servercert.pem"
+    serverKeyPath: "./secrets/serverkey.pem"
+    useQuoteSourceFSPAsTransferPayeeFSP: "false"
+    validateInboundJWS: "false"
+    ws02BearerToken: "7718fa9b-be13-3fe7-87f0-a12cf1628168"
+
+
+#ex bank of amaerica
+dfsp2:
+  image:
+    name:  mojaloop/sdk-mock-dfsp-backend
+    version: v8.3.0
+  ports:
+    port: 10000
+    containerPort: 3000
+    nodePort: 30100
+  config:
+    autoAcceptParty: "true"
+    autoAcceptQuotes: "true"
+    caCertPath: "./secrets/cacert.pem"
+    checkIlp: "false"
+    dfspId: "bankofamerica"
+    enableOAuthTokenEndpoint: "false"
+    enableTestFeature: "false"
+    expirySeconds: 6000
+    ilpSecret: "Quaixohyaesahju3thivuiChai5cahng"
+    inboundListPort: 7000
+    inboundMutualTlsEnabled: "false"
+    jwsSign: "false"
+    jwsSigningKeyPath: "/jwsSigningKey.key"
+    jwsVerificationKeysDirectory: "/jwsVerificationKeys"
+    logIndent: 0
+    mutualTlsEnabled: "false"
+    oauthClientKey: ""
+    oauthClientSecret: ""
+    oauthRefreshSeconds: 3600
+    oauthTokenEndpoint: ""
+    oauthTokenEndpointClientKey: "test-client-key"
+    oauthTokenEndpointClientSecret: "test-client-secret"
+    outboundListenPort: 7002
+    outboundMutualTlsEnabled: "false"
+    rejectExpiredQuoteResponse: "false"
+    rejectExpiredTransfersFulfils: "false"
+    rejectTransfersOnExpiredQuotes: "false"
+    schemeName: "default"
+    serverCertPath:  "./secrets/servercert.pem"
+    serverKeyPath: "./secrets/serverkey.pem"
+    useQuoteSourceFSPAsTransferPayeeFSP: "false"
+    validateInboundJWS: "false"
+    ws02BearerToken: "7718fa9b-be13-3fe7-87f0-a12cf1628168"
+
+simulator:
+  image:
+    name: mojaloop/simulator
+    version: v8.3.1
+  ports:
+    containerPort: 8444
+    nodePort: 30844

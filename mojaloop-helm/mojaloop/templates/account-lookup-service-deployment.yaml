@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-account-lookup-service
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-account-lookup-service
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-account-lookup-service
+    spec:
+      containers:
+      - args:
+        - sh
+        - -c
+        - node src/index.js server
+        env:
+        - name: LOG_LEVEL
+          value: debug
+        name: {{ .Release.Name }}-account-lookup-service
+        {{- with .Values.accountLookUp }}
+        image: "{{ .image.name }}:{{ .image.version }}"
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - apk --no-cache add curl
+            - ;
+            - curl
+            - http://localhost:{{ .ports.containerAdminPort }}/health
+          failureThreshold: 10
+          periodSeconds: 60
+          timeoutSeconds: 20
+        ports:
+        - containerPort: {{ .ports.containerApiPort }}
+        - containerPort: {{ .ports.containerAdminPort }}
+        {{- end }}
+        resources: {}
+        restartPolicy: Always
+        volumeMounts:
+          - name: config-volume
+            mountPath: /opt/account-lookup-service/config/default.json
+            subPath: default.json
+      volumes:
+        - name: config-volume
+          configMap:
+            name: account-lookup-service-configmap
+status: {}

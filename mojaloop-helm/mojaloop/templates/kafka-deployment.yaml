@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -c
+    kompose.version: 1.19.0 (f63a961c)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: kafka
+  name: kafka
+spec:
+  selector:
+    matchLabels:
+      app: kafka
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -c
+        kompose.version: 1.19.0 (f63a961c)
+      creationTimestamp: null
+      labels:
+        app: kafka
+    spec:
+      containers:
+      - env:
+        - name: ZOO_LOG4J_PROP
+          value: WARN
+        image: johnnypark/kafka-zookeeper:2.3.0
+        livenessProbe:
+          exec:
+            command:
+            - /opt/kafka_2.12-2.3.0/bin/kafka-broker-api-versions.sh
+            - --bootstrap-server
+            - localhost:9092
+          failureThreshold: 10
+          initialDelaySeconds: 40
+          periodSeconds: 30
+          timeoutSeconds: 20
+        name: cl-kafka
+        ports:
+        - containerPort: 2181
+        - containerPort: 9092
+        - containerPort: 29092
+        resources: {}
+        volumeMounts:
+          - name: config-volume
+            mountPath: /opt/kafka_2.12-2.3.0/config/consumer.properties
+            subPath: consumer.properties
+          - name: config-volume
+            mountPath: /opt/kafka_2.12-2.3.0/config/producer.properties
+            subPath: producer.properties
+          - name: config-volume
+            mountPath: /opt/kafka_2.12-2.3.0/config/server.properties
+            subPath: server.properties
+          - name: config-volume
+            mountPath: /opt/kafka_2.12-2.3.0/config/tools-log4j.properties
+            subPath: tools-log4j.properties
+      restartPolicy: Always
+      volumes:
+      - name: config-volume
+        configMap:
+          name: kafka-configmap
+status: {}

@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: dfsp2-scheme-adapter
+spec:
+  ports:
+    {{- with .Values.dfsp2 }}
+    - name: {{ .config.outboundListenPort | quote }}
+      port: {{ .config.outboundListenPort }}
+      targetPort: {{ .config.outboundListenPort }}
+    - name: {{ .config.inboundListPort | quote }}
+      port: {{ .config.inboundListPort }}
+      targetPort: {{ .config.inboundListPort }}
+    {{- end }}
+  selector:
+    app: dfsp2-scheme-adapter
+status:
+  loadBalancer: {}

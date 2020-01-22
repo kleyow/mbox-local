@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-central-settlement
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-central-settlement
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-central-settlement
+    spec:
+      containers:
+      - args:
+        - sh
+        - -c
+        - node src/server.js
+        name: {{ .Release.Name }}-central-settlement
+        {{- with .Values.centralSettlement }}
+        image: "{{ .image.name }}:{{ .image.version }}"
+        name: cl-central-settlement
+        ports:
+        - containerPort: {{ .ports.containerPort }}
+        {{- end }}
+        resources: {}
+        volumeMounts:
+          - name: config-volume
+            mountPath: /opt/central-settlement/config/default.json
+            subPath: default.json
+      restartPolicy: Always
+      volumes:
+        - name: config-volume
+          configMap:
+            name: central-settlement-configmap
+status: {}

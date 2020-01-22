@@ -1,0 +1,54 @@
+{{- if  .Values.centralLedger.db.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      {{- with .Values.centralLedger }}
+      - env:
+        - name: MYSQL_ALLOW_EMPTY_PASSWORD
+          value: "true"
+        - name: MYSQL_DATABASE
+          value: {{ .db.schema }}
+        - name: MYSQL_PASSWORD
+          value: {{ .db.password }}
+        - name: MYSQL_USER
+          value: {{ .db.user }}
+        image: mysql/mysql-server
+        livenessProbe:
+          exec:
+            command:
+            - mysqladmin
+            - ping
+          failureThreshold: 10
+          initialDelaySeconds: 40
+          periodSeconds: 30
+          timeoutSeconds: 20
+        name: cl-mysql
+        ports:
+        - containerPort: 3306
+        resources: {}
+        volumeMounts:
+          - name: config-volume
+            mountPath: /docker-entrypoint-initdb.d/01_permissions.sql
+            subPath: 01_permissions.sql
+      restartPolicy: Always
+      {{- end }}
+      volumes:
+        - name: config-volume
+          configMap:
+            name: mysql-configmap
+status: {}
+{{- end -}}

@@ -1,0 +1,223 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -c
+    kompose.version: 1.19.0 (f63a961c)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: dfsp2-scheme-adapter
+  name: dfsp2-scheme-adapter
+spec:
+  selector:
+    matchLabels:
+      app: dfsp2-scheme-adapter
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -c
+        kompose.version: 1.19.0 (f63a961c)
+      creationTimestamp: null
+      labels:
+        app: dfsp2-scheme-adapter
+    spec:
+      containers:
+      - env:
+        - name: ALS_ENDPOINT
+          value: {{ .Release.Name }}-account-lookup-service:{{ .Values.accountLookUp.ports.containerApiPort }}
+        - name: AUTO_ACCEPT_PARTY
+          valueFrom:
+            configMapKeyRef:
+              key: AUTO_ACCEPT_PARTY
+              name: dfsp2-scheme-adapter-dfsp2-scheme-adapter-env
+        - name: AUTO_ACCEPT_QUOTES
+          valueFrom:
+            configMapKeyRef:
+              key: AUTO_ACCEPT_QUOTES
+              name: dfsp2-scheme-adapter-dfsp2-scheme-adapter-env
+        - name: BACKEND_ENDPOINT
+          valueFrom:
+            configMapKeyRef:
+              key: BACKEND_ENDPOINT
+              name: dfsp2-scheme-adapter-dfsp2-scheme-adapter-env
+        - name: CACHE_HOST
+          valueFrom:
+            configMapKeyRef:
+              key: CACHE_HOST
+              name: dfsp2-scheme-adapter-dfsp2-scheme-adapter-env
+        - name: CACHE_PORT
+          valueFrom:
+            configMapKeyRef:
+              key: CACHE_PORT
+              name: dfsp2-scheme-adapter-dfsp2-scheme-adapter-env
+        - name: CA_CERT_PATH
+          valueFrom:
+            configMapKeyRef:
+              key: CA_CERT_PATH
+              name: dfsp2-scheme-adapter-dfsp2-scheme-adapter-env
+        - name: CHECK_ILP
+          valueFrom:
+            configMapKeyRef:
+              key: CHECK_ILP
+              name: dfsp2-scheme-adapter-dfsp2-scheme-adapter-env
+        - name: DFSP_ID
+          valueFrom:
+            configMapKeyRef:
+              key: DFSP_ID
+              name: dfsp2-scheme-adapter-dfsp2-scheme-adapter-env
+        - name: ENABLE_OAUTH_TOKEN_ENDPOINT
+          valueFrom:
+            configMapKeyRef:
+              key: ENABLE_OAUTH_TOKEN_ENDPOINT
+              name: dfsp2-scheme-adapter-dfsp2-scheme-adapter-env
+        - name: ENABLE_TEST_FEATURES
+          valueFrom:
+            configMapKeyRef:
+              key: ENABLE_TEST_FEATURES
+              name: dfsp2-scheme-adapter-dfsp2-scheme-adapter-env
+        - name: EXPIRY_SECONDS
+          valueFrom:
+            configMapKeyRef:
+              key: EXPIRY_SECONDS
+              name: dfsp2-scheme-adapter-dfsp2-scheme-adapter-env
+        - name: ILP_SECRET
+          valueFrom:
+            configMapKeyRef:
+              key: ILP_SECRET
+              name: dfsp2-scheme-adapter-dfsp2-scheme-adapter-env
+        - name: INBOUND_LISTEN_PORT
+          valueFrom:
+            configMapKeyRef:
+              key: INBOUND_LISTEN_PORT
+              name: dfsp2-scheme-adapter-dfsp2-scheme-adapter-env
+        - name: INBOUND_MUTUAL_TLS_ENABLED
+          valueFrom:
+            configMapKeyRef:
+              key: INBOUND_MUTUAL_TLS_ENABLED
+              name: dfsp2-scheme-adapter-dfsp2-scheme-adapter-env
+        - name: JWS_SIGN
+          valueFrom:
+            configMapKeyRef:
+              key: JWS_SIGN
+              name: dfsp2-scheme-adapter-dfsp2-scheme-adapter-env
+        - name: JWS_SIGNING_KEY_PATH
+          valueFrom:
+            configMapKeyRef:
+              key: JWS_SIGNING_KEY_PATH
+              name: dfsp2-scheme-adapter-dfsp2-scheme-adapter-env
+        - name: JWS_VERIFICATION_KEYS_DIRECTORY
+          valueFrom:
+            configMapKeyRef:
+              key: JWS_VERIFICATION_KEYS_DIRECTORY
+              name: dfsp2-scheme-adapter-dfsp2-scheme-adapter-env
+        - name: LOG_INDENT
+          valueFrom:
+            configMapKeyRef:
+              key: LOG_INDENT
+              name: dfsp2-scheme-adapter-dfsp2-scheme-adapter-env
+        - name: MUTUAL_TLS_ENABLED
+          valueFrom:
+            configMapKeyRef:
+              key: MUTUAL_TLS_ENABLED
+              name: dfsp2-scheme-adapter-dfsp2-scheme-adapter-env
+        - name: OAUTH_CLIENT_KEY
+          valueFrom:
+            configMapKeyRef:
+              key: OAUTH_CLIENT_KEY
+              name: dfsp2-scheme-adapter-dfsp2-scheme-adapter-env
+        - name: OAUTH_CLIENT_SECRET
+          valueFrom:
+            configMapKeyRef:
+              key: OAUTH_CLIENT_SECRET
+              name: dfsp2-scheme-adapter-dfsp2-scheme-adapter-env
+        - name: OAUTH_REFRESH_SECONDS
+          valueFrom:
+            configMapKeyRef:
+              key: OAUTH_REFRESH_SECONDS
+              name: dfsp2-scheme-adapter-dfsp2-scheme-adapter-env
+        - name: OAUTH_TOKEN_ENDPOINT
+          valueFrom:
+            configMapKeyRef:
+              key: OAUTH_TOKEN_ENDPOINT
+              name: dfsp2-scheme-adapter-dfsp2-scheme-adapter-env
+        - name: OAUTH_TOKEN_ENDPOINT_CLIENT_KEY
+          valueFrom:
+            configMapKeyRef:
+              key: OAUTH_TOKEN_ENDPOINT_CLIENT_KEY
+              name: dfsp2-scheme-adapter-dfsp2-scheme-adapter-env
+        - name: OAUTH_TOKEN_ENDPOINT_CLIENT_SECRET
+          valueFrom:
+            configMapKeyRef:
+              key: OAUTH_TOKEN_ENDPOINT_CLIENT_SECRET
+              name: dfsp2-scheme-adapter-dfsp2-scheme-adapter-env
+        - name: OUTBOUND_LISTEN_PORT
+          valueFrom:
+            configMapKeyRef:
+              key: OUTBOUND_LISTEN_PORT
+              name: dfsp2-scheme-adapter-dfsp2-scheme-adapter-env
+        - name: OUTBOUND_MUTUAL_TLS_ENABLED
+          valueFrom:
+            configMapKeyRef:
+              key: OUTBOUND_MUTUAL_TLS_ENABLED
+              name: dfsp2-scheme-adapter-dfsp2-scheme-adapter-env
+        - name: QUOTES_ENDPOINT
+          value: {{ .Release.Name }}-quoting-service:{{ .Values.quotingService.ports.containerPort }}
+        - name: REJECT_EXPIRED_QUOTE_RESPONSES
+          valueFrom:
+            configMapKeyRef:
+              key: REJECT_EXPIRED_QUOTE_RESPONSES
+              name: dfsp2-scheme-adapter-dfsp2-scheme-adapter-env
+        - name: REJECT_EXPIRED_TRANSFER_FULFILS
+          valueFrom:
+            configMapKeyRef:
+              key: REJECT_EXPIRED_TRANSFER_FULFILS
+              name: dfsp2-scheme-adapter-dfsp2-scheme-adapter-env
+        - name: REJECT_TRANSFERS_ON_EXPIRED_QUOTES
+          valueFrom:
+            configMapKeyRef:
+              key: REJECT_TRANSFERS_ON_EXPIRED_QUOTES
+              name: dfsp2-scheme-adapter-dfsp2-scheme-adapter-env
+        - name: SCHEME_NAME
+          valueFrom:
+            configMapKeyRef:
+              key: SCHEME_NAME
+              name: dfsp2-scheme-adapter-dfsp2-scheme-adapter-env
+        - name: SERVER_CERT_PATH
+          valueFrom:
+            configMapKeyRef:
+              key: SERVER_CERT_PATH
+              name: dfsp2-scheme-adapter-dfsp2-scheme-adapter-env
+        - name: SERVER_KEY_PATH
+          valueFrom:
+            configMapKeyRef:
+              key: SERVER_KEY_PATH
+              name: dfsp2-scheme-adapter-dfsp2-scheme-adapter-env
+        - name: TRANSFERS_ENDPOINT
+          value: {{ .Release.Name }}-ml-api-adapter:{{ .Values.mlApiAdapter.ports.containerPort }}
+        - name: USE_QUOTE_SOURCE_FSP_AS_TRANSFER_PAYEE_FSP
+          valueFrom:
+            configMapKeyRef:
+              key: USE_QUOTE_SOURCE_FSP_AS_TRANSFER_PAYEE_FSP
+              name: dfsp2-scheme-adapter-dfsp2-scheme-adapter-env
+        - name: VALIDATE_INBOUND_JWS
+          valueFrom:
+            configMapKeyRef:
+              key: VALIDATE_INBOUND_JWS
+              name: dfsp2-scheme-adapter-dfsp2-scheme-adapter-env
+        - name: WS02_BEARER_TOKEN
+          valueFrom:
+            configMapKeyRef:
+              key: WS02_BEARER_TOKEN
+              name: dfsp2-scheme-adapter-dfsp2-scheme-adapter-env
+        image: mojaloop/sdk-scheme-adapter:v8.6.0
+        name: dfsp2-scheme-adapter
+        ports:
+        {{- with .Values.dfsp2 }}
+        - containerPort: {{ .config.inboundListPort }}
+        - containerPort: {{ .config.outboundListenPort }}
+        {{- end }}
+        resources: {}
+      restartPolicy: Always
+status: {}

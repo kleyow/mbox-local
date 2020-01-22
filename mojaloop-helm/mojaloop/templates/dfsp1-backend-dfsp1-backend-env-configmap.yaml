@@ -1,0 +1,9 @@
+apiVersion: v1
+data:
+  LISTEN_PORT: "3000"
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: dfsp1-backend-dfsp1-backend-env
+  name: dfsp1-backend-dfsp1-backend-env

@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Release.Name }}-{{ .Values.dfsp2.config.dfspId }}-redis"
+spec:
+  selector:
+    matchLabels:
+      app: "{{ .Release.Name }}-{{ .Values.dfsp2.config.dfspId }}-redis"
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: "{{ .Release.Name }}-{{ .Values.dfsp2.config.dfspId }}-redis"
+    spec:
+      containers:
+      - image: redis:5.0.4-alpine
+        name: dfsp2-redis
+        resources: {}
+      restartPolicy: Always
+status: {}

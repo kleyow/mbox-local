@@ -1,0 +1,12 @@
+appVersion: "0.0.1"
+description: Mojaloop and sdk adaptter Helm chart for Kubernetes
+name: mojaloop-helm
+version: 0.0.1
+keywords:
+  - mojaloop-helm
+sources:
+  - https://github.com/modusintegration/mbox-local-mojaloop/tree/master/mojaloop-local-sim
+maintainers:
+  - name: Damian Gattesco
+    email: damian.gattesco@modusbox.com
+

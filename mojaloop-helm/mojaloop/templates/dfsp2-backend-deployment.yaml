@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Release.Name }}-{{ .Values.dfsp2.config.dfspId }}-backend"
+spec:
+  selector:
+    matchLabels:
+      app: "{{ .Release.Name }}-{{ .Values.dfsp2.config.dfspId }}-backend"
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app:  "{{ .Release.Name }}-{{ .Values.dfsp2.config.dfspId }}-backend"
+    spec:
+      containers:
+      - env:
+        {{- with .Values.dfsp2 }}
+        - name: LISTEN_PORT
+          valueFrom:
+            configMapKeyRef:
+              key: LISTEN_PORT
+              name: dfsp2-backend-dfsp2-backend-env
+        - name: OUTBOUND_ENDPOINT
+          value: http://dfsp2-scheme-adapter:{{ .config.outboundListenPort }}
+        image: "{{ .image.name }}:{{ .image.version }}"
+        name: dfsp2-backend
+        ports:
+        - containerPort: {{ .ports.containerPort }}
+        {{- end }}
+        name: "{{ .Release.Name }}-{{ .Values.dfsp2.config.dfspId }}-backend"
+        resources: {}
+      restartPolicy: Always
+status: {}

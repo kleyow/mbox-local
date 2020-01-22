@@ -1,0 +1,44 @@
+apiVersion: v1
+data:
+  AUTO_ACCEPT_PARTY: {{ .Values.dfsp1.config.autoAcceptParty | quote }}
+  AUTO_ACCEPT_QUOTES: {{ .Values.dfsp1.config.autoAcceptQuotes | quote }}
+  BACKEND_ENDPOINT: {{ .Release.Name }}-{{ .Values.dfsp1.config.dfspId }}-backend:{{ .Values.dfsp1.ports.port }}
+  CA_CERT_PATH: {{ .Values.dfsp1.config.caCertPath }}
+  CACHE_HOST: {{ .Release.Name }}-{{ .Values.dfsp1.config.dfspId }}-redis
+  CACHE_PORT: "6379"
+  CHECK_ILP: {{ .Values.dfsp1.config.checkIlp | quote}}
+  DFSP_ID: {{ .Values.dfsp1.config.dfspId }}
+  ENABLE_OAUTH_TOKEN_ENDPOINT: {{ .Values.dfsp1.config.enableOAuthTokenEndpoint | quote }}
+  ENABLE_TEST_FEATURES: {{ .Values.dfsp1.config.enableTestFeature | quote }}
+  EXPIRY_SECONDS: {{ .Values.dfsp1.config.expirySeconds | quote }}
+  ILP_SECRET: {{ .Values.dfsp1.config.ilpSecret }}
+  INBOUND_LISTEN_PORT: {{ .Values.dfsp1.config.inboundListPort | quote }}
+  INBOUND_MUTUAL_TLS_ENABLED: {{ .Values.dfsp1.config.inboundMutualTlsEnabled | quote }}
+  JWS_SIGN: {{ .Values.dfsp1.config.jwsSign | quote }}
+  JWS_SIGNING_KEY_PATH: {{ .Values.dfsp1.config.jwsSigningKeyPath }}
+  JWS_VERIFICATION_KEYS_DIRECTORY: {{ .Values.dfsp1.config.jwsVerificationKeysDirectory }}
+  LOG_INDENT: {{ .Values.dfsp1.config.logIndent | quote }}
+  MUTUAL_TLS_ENABLED: {{ .Values.dfsp1.config.mutualTlsEnabled | quote }}
+  OAUTH_CLIENT_KEY: {{ .Values.dfsp1.config.oauthClientKey }}
+  OAUTH_CLIENT_SECRET: {{ .Values.dfsp1.config.oauthClientSecret }}
+  OAUTH_REFRESH_SECONDS: {{ .Values.dfsp1.config.oauthRefreshSeconds | quote }}
+  OAUTH_TOKEN_ENDPOINT: {{ .Values.dfsp1.config.oauthTokenEndpoint }}
+  OAUTH_TOKEN_ENDPOINT_CLIENT_KEY: {{ .Values.dfsp1.config.oauthTokenEndpointClientKey }}
+  OAUTH_TOKEN_ENDPOINT_CLIENT_SECRET: {{ .Values.dfsp1.config.oauthTokenEndpointClientSecret }}
+  OUTBOUND_LISTEN_PORT: {{ .Values.dfsp1.config.outboundListenPort | quote }}
+  OUTBOUND_MUTUAL_TLS_ENABLED: {{ .Values.dfsp1.config.outboundMutualTlsEnabled | quote }}
+  REJECT_EXPIRED_QUOTE_RESPONSES: {{ .Values.dfsp1.config.rejectExpiredQuoteResponse | quote }}
+  REJECT_EXPIRED_TRANSFER_FULFILS: {{ .Values.dfsp1.config.rejectExpiredTransfersFulfils | quote }}
+  REJECT_TRANSFERS_ON_EXPIRED_QUOTES: {{ .Values.dfsp1.config.rejectTransfersOnExpiredQuotes | quote }}
+  SCHEME_NAME: {{ .Values.dfsp1.config.schemeName }}
+  SERVER_CERT_PATH: {{ .Values.dfsp1.config.serverCertPath }}
+  SERVER_KEY_PATH: {{ .Values.dfsp1.config.serverKeyPath }}
+  USE_QUOTE_SOURCE_FSP_AS_TRANSFER_PAYEE_FSP: {{ .Values.dfsp1.config.useQuoteSourceFSPAsTransferPayeeFSP | quote }}
+  VALIDATE_INBOUND_JWS: {{ .Values.dfsp1.config.validateInboundJWS | quote }}
+  WS02_BEARER_TOKEN: {{ .Values.dfsp1.config.ws02BearerToken }}
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: dfsp1-scheme-adapter-dfsp1-scheme-adapter-env
+  name: dfsp1-scheme-adapter-dfsp1-scheme-adapter-env

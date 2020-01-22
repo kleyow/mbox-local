@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-quoting-service
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-quoting-service
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-quoting-service
+    spec:
+      containers:
+      - image: "{{ .Values.quotingService.image.name }}:{{ .Values.quotingService.image.version }}"
+        name: {{ .Release.Name }}-qs-quoting-service
+        ports:
+        - containerPort:  {{ .Values.quotingService.ports.containerPort }}
+        resources: {}
+        volumeMounts:
+          - name: config-volume
+            mountPath: /opt/quoting-service/config/default.json
+            subPath: default.json
+      restartPolicy: Always
+      volumes:
+        - name: config-volume
+          configMap:
+            name: quoting-service-configmap
+status: {}

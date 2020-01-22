@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-{{ .Values.dfsp2.config.dfspId }}-backend
+spec:
+  type: NodePort 
+  ports:
+    {{- with .Values.dfsp2 }}
+    - name: {{ .ports.containerPort | quote }}
+      port: {{ .ports.port }}
+      targetPort: {{ .ports.containerPort }}
+      nodePort: {{ .ports.nodePort }}
+    {{- end }}
+  selector:
+    app: {{ .Release.Name }}-{{ .Values.dfsp2.config.dfspId }}-backend
+status:
+  loadBalancer: {}
