@@ -227,27 +227,9 @@
 			"name": "Send Quote_SEND MAD",
 			"event": [
 				{
-					"listen": "prerequest",
-					"script": {
-						"id": "887e4721-3923-41bd-bf8a-3d0cd5eed8ee",
-						"exec": [
-							"var uuid = require('uuid');",
-							"var generatedUUID = uuid.v4();",
-							"",
-							"pm.environment.set('quoteId', generatedUUID);",
-							"generatedUUID = uuid.v4();",
-							"pm.environment.set('transactionId', generatedUUID);",
-							"pm.environment.set('quoteDate', (new Date()).toUTCString());",
-							"pm.environment.set('transferAmount', 100);",
-							""
-						],
-						"type": "text/javascript"
-					}
-				},
-				{
 					"listen": "test",
 					"script": {
-						"id": "029f9c14-13e7-4aac-ada8-572ccf2d502c",
+						"id": "43457448-90ed-4bec-ad9f-cc0f133e87d4",
 						"exec": [
 							"pm.test(\"Status code is 202\", function () {",
 							"    pm.response.to.have.status(202);",
@@ -255,20 +237,20 @@
 							"",
 							"//Check the request that Switch forwards to payeefsp",
 							"setTimeout(function () {",
-							"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/dfspeur/requests/\"+pm.variables.get(\"quoteId\"), function (err, response) {",
+							"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/dfsp2/requests/\"+pm.variables.get(\"quoteId\"), function (err, response) {",
 							"          if(response.responseSize !== 0) {",
-							"              console.log('dfspeur  request response:')",
+							"              console.log('dfsp2  request response:')",
 							"              ",
 							"              ",
 							"              //Check the Headers",
 							"              var headers = response.json().headers;",
 							"              ",
 							"                pm.test(\"payeefsp fspiop-source is payerfsp\", function () {",
-							"                    pm.expect(headers['fspiop-source']).to.eql('dfsp1');",
+							"                    pm.expect(headers['fspiop-source']).to.eql('dfspmad');",
 							"                });",
 							"                ",
 							"                pm.test(\"payeefsp fspiop-destination is payerfsp\", function () {",
-							"                    pm.expect(headers['fspiop-destination']).to.eql('dfspeur');",
+							"                    pm.expect(headers['fspiop-destination']).to.eql('dfsp2');",
 							"                });",
 							"                ",
 							"                pm.test(\"payeefsp fspiop-signature is same as sent in the request\", function () {",
@@ -294,17 +276,17 @@
 							"",
 							"//Check Data on payer side",
 							"setTimeout(function () {",
-							"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/dfsp1/callbacks/\"+pm.variables.get(\"quoteId\"), function (err, response) {",
+							"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/dfspmad/callbacks/\"+pm.variables.get(\"quoteId\"), function (err, response) {",
 							"      if(response.responseSize !== 0) {",
-							"          console.log('dfsp1callback response:')",
+							"          console.log('dfspmadcallback response:')",
 							"          //Checking headers",
 							"            var headers = response.json().headers;",
 							"            pm.test(\"payerfsp fspiop-source is payeefsp\", function () {",
-							"                pm.expect(headers['fspiop-source']).to.eql('dfspeur');",
+							"                pm.expect(headers['fspiop-source']).to.eql('dfsp2');",
 							"            });",
 							"            ",
 							"            pm.test(\"payerfsp fspiop-destination is payerfsp\", function () {",
-							"                pm.expect(headers['fspiop-destination']).to.eql('dfsp1');",
+							"                pm.expect(headers['fspiop-destination']).to.eql('dfspmad');",
 							"            });",
 							"            ",
 							"            pm.test(\"payerfsp content-type should be application/vnd.interoperability.quotes+json;version=1.0\", function () {",
@@ -332,10 +314,10 @@
 							"                pm.expect(decodedProtectedHeaders['FSPIOP-HTTP-Method']).to.eql('PUT');",
 							"            });",
 							"            pm.test(\"FSPIOP-Signature Protected Header FSPIOP-Source to be mojaloop-sdk\", function () {",
-							"                pm.expect(decodedProtectedHeaders['FSPIOP-Source']).to.eql('dfsp1');",
+							"                pm.expect(decodedProtectedHeaders['FSPIOP-Source']).to.eql('dfspmad');",
 							"            });",
 							"            pm.test(\"FSPIOP-Signature Protected Header FSPIOP-Destination to be payerfsp\", function () {",
-							"                pm.expect(decodedProtectedHeaders['FSPIOP-Destination']).to.eql('dfsp1');",
+							"                pm.expect(decodedProtectedHeaders['FSPIOP-Destination']).to.eql('dfspmad');",
 							"            });",
 							"            pm.test(\"FSPIOP-Signature Protected Header Date is present\", function () {",
 							"                pm.expect(decodedProtectedHeaders['Date']).to.not.eql(undefined);",
@@ -377,9 +359,24 @@
 							"      }",
 							"       ",
 							"   });",
-							"}, 1000)",
+							"}, 1000)"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "203c2fb3-3453-4a51-a4c5-dba6ccadfa48",
+						"exec": [
+							"var uuid = require('uuid');",
+							"var generatedUUID = uuid.v4();",
 							"",
-							"",
+							"pm.environment.set('quoteId', generatedUUID);",
+							"generatedUUID = uuid.v4();",
+							"pm.environment.set('transactionId', generatedUUID);",
+							"pm.environment.set('quoteDate', (new Date()).toUTCString());",
+							"pm.environment.set('transferAmount', 100);",
 							""
 						],
 						"type": "text/javascript"
