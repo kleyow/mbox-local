@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-central-settlement
+  namespace: {{ default $.Release.Namespace $.Values.namespace }}
+spec:
+  type: NodePort
+  ports:
+    {{- with .Values.centralSettlement }}
+    - name: {{ .ports.containerPort | quote }}
+      port: {{ .ports.containerPort }}
+      targetPort: {{ .ports.containerPort }}
+      nodePort: {{ .ports.nodePort }}
+    {{- end }}
+  selector:
+    app: {{ .Release.Name }}-central-settlement
+status:
+  loadBalancer: {}

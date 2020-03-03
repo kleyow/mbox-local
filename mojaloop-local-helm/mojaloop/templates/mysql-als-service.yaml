@@ -1,0 +1,19 @@
+{{- if .Values.accountLookUp.db.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-als
+  namespace: {{ default $.Release.Namespace $.Values.namespace }}
+spec:
+  type: NodePort 
+  ports:
+    {{- with .Values.accountLookUp }}
+    - name: {{ .db.port | quote }}
+      port: {{ .db.port }}
+      targetPort: 3306
+    {{- end }}
+  selector:
+    app: mysql-als
+status:
+  loadBalancer: {}
+{{- end -}}

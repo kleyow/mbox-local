@@ -1,0 +1,640 @@
+apiVersion: v1
+data:
+  default.json: |
+    {
+        "HOSTNAME": "http://{{ .Release.Name }}-quoting-service",
+        "LISTEN_ADDRESS": "0.0.0.0",
+        "PORT": {{ .Values.quotingService.ports.containerPort }},
+        "AMOUNT": {
+          "PRECISION": 18,
+          "SCALE": 4    
+        }, 
+        {{- with .Values.centralLedger }}
+          "DATABASE": {
+            "DIALECT": "mysql",
+            "HOST": {{ .db.host | quote }},
+            "PORT": {{ .db.port }},
+            "USER": {{ .db.user | quote }},
+            "PASSWORD": {{ .db.password | quote }},
+            "SCHEMA": {{ .db.schema | quote }},
+            "POOL_MIN_SIZE": 10,
+            "POOL_MAX_SIZE": 10,
+            "ACQUIRE_TIMEOUT_MILLIS": 30000,
+            "CREATE_TIMEOUT_MILLIS": 30000,
+            "DESTROY_TIMEOUT_MILLIS": 5000,
+            "IDLE_TIMEOUT_MILLIS": 30000,
+            "REAP_INTERVAL_MILLIS": 1000,
+            "CREATE_RETRY_INTERVAL_MILLIS": 200,
+            "DEBUG": false
+          },
+        {{- end }}
+        "SWITCH_ENDPOINT": "http://{{ .Release.Name }}-central-ledger:{{ .Values.centralLedger.ports.containerPort }}",
+        "ERROR_HANDLING":{
+          "includeCauseExtension": false,
+          "truncateCause": true
+        },
+        "SIMPLE_ROUTING_MODE": false 
+    }
+  rules.json: |
+    [
+        {
+            "conditions": {
+                "all": [
+                    {
+                        "fact": "payer",
+                        "path": "$.accounts",
+                        "operator": "isArray",
+                        "value": false
+                    }
+                ]
+            },
+            "event": {
+                "type": "INVALID_QUOTE_REQUEST",
+                "params": {
+                    "FSPIOPError": "PAYER_ERROR",
+                    "message": "Payer does not have any active account"
+                }
+            }
+        },
+        {
+            "conditions": {
+                "all": [
+                    {
+                        "fact": "payee",
+                        "path": "$.accounts",
+                        "operator": "isArray",
+                        "value": false
+                    }
+                ]
+            },
+            "event": {
+                "type": "INVALID_QUOTE_REQUEST",
+                "params": {
+                    "FSPIOPError": "PAYEE_ERROR",
+                    "message": "Payee does not have any active accounts"
+                }
+            }
+        },
+        {
+            "conditions": {
+                "all": [
+                    {
+                        "fact": "headers",
+                        "path": "$.fspiop-source",
+                        "operator": "notIn",
+                        "value": [
+                            "DFSPXOF",
+                            "DFSPEUR",
+                            "DFSPMAD"
+                        ]
+                    },
+                    {
+                        "fact": "payload",
+                        "path": "$.amount.currency",
+                        "operator": "notIn",
+                        "value": {
+                            "fact": "payee",
+                            "path": "$.accounts[?(@.ledgerAccountType == 'POSITION' && @.isActive == 1)].currency"
+                        }
+                    },
+                    {
+                        "fact": "payload",
+                        "path": "$.amount.currency",
+                        "operator": "equal",
+                        "value": "EUR"
+                    }
+                ]
+            },
+            "event": {
+                "type": "INTERCEPT_QUOTE",
+                "params": {
+                    "rerouteToFsp": "DFSPEUR",
+                    "sourceCurrency": "EUR",
+                    "rerouteToFspCurrency": "MAD"
+                }
+            }
+        },
+        {
+            "conditions": {
+                "all": [
+                    {
+                        "fact": "headers",
+                        "path": "$.fspiop-source",
+                        "operator": "notIn",
+                        "value": [
+                            "DFSPXOF",
+                            "DFSPEUR",
+                            "DFSPMAD"
+                        ]
+                    },
+                    {
+                        "fact": "payload",
+                        "path": "$.amount.currency",
+                        "operator": "notIn",
+                        "value": {
+                            "fact": "payer",
+                            "path": "$.accounts[?(@.ledgerAccountType == 'POSITION' && @.isActive == 1)].currency"
+                        }
+                    },
+                    {
+                        "fact": "payload",
+                        "path": "$.amount.currency",
+                        "operator": "equal",
+                        "value": "MAD"
+                    }
+                ]
+            },
+            "event": {
+                "type": "INTERCEPT_QUOTE",
+                "params": {
+                    "rerouteToFsp": "DFSPEUR",
+                    "sourceCurrency": "EUR",
+                    "rerouteToFspCurrency": "MAD"
+                }
+            }
+        },
+        {
+            "conditions": {
+                "all": [
+                    {
+                        "fact": "headers",
+                        "path": "$.fspiop-source",
+                        "operator": "notIn",
+                        "value": [
+                            "DFSPXOF",
+                            "DFSPEUR",
+                            "DFSPMAD"
+                        ]
+                    },
+                    {
+                        "fact": "payload",
+                        "path": "$.amount.currency",
+                        "operator": "notIn",
+                        "value": {
+                            "fact": "payee",
+                            "path": "$.accounts[?(@.ledgerAccountType == 'POSITION' && @.isActive == 1)].currency"
+                        }
+                    },
+                    {
+                        "fact": "payload",
+                        "path": "$.amount.currency",
+                        "operator": "equal",
+                        "value": "MAD"
+                    }
+                ]
+            },
+            "event": {
+                "type": "INTERCEPT_QUOTE",
+                "params": {
+                    "rerouteToFsp": "DFSPMAD",
+                    "sourceCurrency": "MAD",
+                    "rerouteToFspCurrency": "EUR"
+                }
+            }
+        },
+        {
+            "conditions": {
+                "all": [
+                    {
+                        "fact": "headers",
+                        "path": "$.fspiop-source",
+                        "operator": "notIn",
+                        "value": [
+                            "DFSPXOF",
+                            "DFSPEUR",
+                            "DFSPMAD"
+                        ]
+                    },
+                    {
+                        "fact": "payload",
+                        "path": "$.amount.currency",
+                        "operator": "notIn",
+                        "value": {
+                            "fact": "payer",
+                            "path": "$.accounts[?(@.ledgerAccountType == 'POSITION' && @.isActive == 1)].currency"
+                        }
+                    },
+                    {
+                        "fact": "payload",
+                        "path": "$.amount.currency",
+                        "operator": "equal",
+                        "value": "EUR"
+                    }
+                ]
+            },
+            "event": {
+                "type": "INTERCEPT_QUOTE",
+                "params": {
+                    "rerouteToFsp": "DFSPMAD",
+                    "sourceCurrency": "MAD",
+                    "rerouteToFspCurrency": "EUR"
+                }
+            }
+        },
+        {
+            "conditions": {
+                "all": [
+                    {
+                        "fact": "payload",
+                        "path": "$.amountType",
+                        "operator": "equal",
+                        "value": "SEND"
+                    },
+                    {
+                        "fact": "payload",
+                        "path": "$.amount.currency",
+                        "operator": "notIn",
+                        "value": {
+                            "fact": "payer",
+                            "path": "$.accounts[?(@.ledgerAccountType == 'POSITION' && @.isActive == 1)].currency"
+                        }
+                    }
+                ]
+            },
+            "event": {
+                "type": "INVALID_QUOTE_REQUEST",
+                "params": {
+                    "FSPIOPError": "PAYER_UNSUPPORTED_CURRENCY",
+                    "message": "Requested currency not available for payer"
+                }
+            }
+        },
+        {
+            "conditions": {
+                "all": [
+                    {
+                        "fact": "payload",
+                        "path": "$.amountType",
+                        "operator": "equal",
+                        "value": "RECEIVE"
+                    },
+                    {
+                        "fact": "payload",
+                        "path": "$.amount.currency",
+                        "operator": "notIn",
+                        "value": {
+                            "fact": "payee",
+                            "path": "$.accounts[?(@.ledgerAccountType == 'POSITION' && @.isActive == 1)].currency"
+                        }
+                    }
+                ]
+            },
+            "event": {
+                "type": "INVALID_QUOTE_REQUEST",
+                "params": {
+                    "FSPIOPError": "PAYEE_UNSUPPORTED_CURRENCY",
+                    "message": "Requested currency not available for payee"
+                }
+            }
+        },
+        {
+            "conditions": {
+                "all": [
+                    {
+                        "any": [
+                            {
+                                "fact": "payload",
+                                "path": "$.amount.currency",
+                                "operator": "notIn",
+                                "value": {
+                                    "fact": "payee",
+                                    "path": "$.accounts[?(@.ledgerAccountType == 'POSITION' && @.isActive == 1)].currency"
+                                }
+                            },
+                            {
+                                "fact": "payload",
+                                "path": "$.amount.currency",
+                                "operator": "notIn",
+                                "value": {
+                                    "fact": "payer",
+                                    "path": "$.accounts[?(@.ledgerAccountType == 'POSITION' && @.isActive == 1)].currency"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "fact": "headers",
+                        "path": "$.fspiop-source",
+                        "operator": "notIn",
+                        "value": [
+                            "DFSPXOF",
+                            "DFSPEUR",
+                            "DFSPMAD"
+                        ]
+                    },
+                    {
+                        "fact": "headers",
+                        "path": "$.fspiop-source",
+                        "operator": "notEqual",
+                        "value": {
+                            "fact": "payload",
+                            "path": "$.payer.partyIdInfo.fspId"
+                        }
+                    }
+                ]
+            },
+            "event": {
+                "type": "INVALID_QUOTE_REQUEST",
+                "params": {
+                    "FSPIOPError": "VALIDATION_ERROR",
+                    "message": "The payer FSP does not match the fspiop-source header"
+                }
+            }
+        },
+        {
+            "conditions": {
+                "all": [
+                    {
+                        "any": [
+                            {
+                                "fact": "payload",
+                                "path": "$.amount.currency",
+                                "operator": "notIn",
+                                "value": {
+                                    "fact": "payee",
+                                    "path": "$.accounts[?(@.ledgerAccountType == 'POSITION' && @.isActive == 1)].currency"
+                                }
+                            },
+                            {
+                                "fact": "payload",
+                                "path": "$.amount.currency",
+                                "operator": "notIn",
+                                "value": {
+                                    "fact": "payer",
+                                    "path": "$.accounts[?(@.ledgerAccountType == 'POSITION' && @.isActive == 1)].currency"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "fact": "payload",
+                        "path": "$.payer.personalInfo",
+                        "operator": "isObject",
+                        "value": false
+                    }
+                ]
+            },
+            "event": {
+                "type": "INVALID_QUOTE_REQUEST",
+                "params": {
+                    "FSPIOPError": "MISSING_ELEMENT",
+                    "message": "PartyPersonalInfo is required"
+                }
+            }
+        },
+        {
+            "conditions": {
+                "all": [
+                    {
+                        "any": [
+                            {
+                                "fact": "payload",
+                                "path": "$.amount.currency",
+                                "operator": "notIn",
+                                "value": {
+                                    "fact": "payee",
+                                    "path": "$.accounts[?(@.ledgerAccountType == 'POSITION' && @.isActive == 1)].currency"
+                                }
+                            },
+                            {
+                                "fact": "payload",
+                                "path": "$.amount.currency",
+                                "operator": "notIn",
+                                "value": {
+                                    "fact": "payer",
+                                    "path": "$.accounts[?(@.ledgerAccountType == 'POSITION' && @.isActive == 1)].currency"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "fact": "payload",
+                        "path": "$.payer.personalInfo.complexName.firstName",
+                        "operator": "isString",
+                        "value": false
+                    }
+                ]
+            },
+            "event": {
+                "type": "INVALID_QUOTE_REQUEST",
+                "params": {
+                    "FSPIOPError": "MISSING_ELEMENT",
+                    "message": "firstName is required"
+                }
+            }
+        },
+        {
+            "conditions": {
+                "all": [
+                    {
+                        "any": [
+                            {
+                                "fact": "payload",
+                                "path": "$.amount.currency",
+                                "operator": "notIn",
+                                "value": {
+                                    "fact": "payee",
+                                    "path": "$.accounts[?(@.ledgerAccountType == 'POSITION' && @.isActive == 1)].currency"
+                                }
+                            },
+                            {
+                                "fact": "payload",
+                                "path": "$.amount.currency",
+                                "operator": "notIn",
+                                "value": {
+                                    "fact": "payer",
+                                    "path": "$.accounts[?(@.ledgerAccountType == 'POSITION' && @.isActive == 1)].currency"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "fact": "payload",
+                        "path": "$.payer.personalInfo.complexName.lastName",
+                        "operator": "isString",
+                        "value": false
+                    }
+                ]
+            },
+            "event": {
+                "type": "INVALID_QUOTE_REQUEST",
+                "params": {
+                    "FSPIOPError": "MISSING_ELEMENT",
+                    "message": "lastName is required"
+                }
+            }
+        },
+        {
+            "conditions": {
+                "all": [
+                    {
+                        "any": [
+                            {
+                                "fact": "payload",
+                                "path": "$.amount.currency",
+                                "operator": "notIn",
+                                "value": {
+                                    "fact": "payee",
+                                    "path": "$.accounts[?(@.ledgerAccountType == 'POSITION' && @.isActive == 1)].currency"
+                                }
+                            },
+                            {
+                                "fact": "payload",
+                                "path": "$.amount.currency",
+                                "operator": "notIn",
+                                "value": {
+                                    "fact": "payer",
+                                    "path": "$.accounts[?(@.ledgerAccountType == 'POSITION' && @.isActive == 1)].currency"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "fact": "payload",
+                        "path": "$.payer.personalInfo.dateOfBirth",
+                        "operator": "isString",
+                        "value": false
+                    }
+                ]
+            },
+            "event": {
+                "type": "INVALID_QUOTE_REQUEST",
+                "params": {
+                    "FSPIOPError": "MISSING_ELEMENT",
+                    "message": "dateOfBirth is required"
+                }
+            }
+        },
+        {
+            "conditions": {
+                "all": [
+                    {
+                        "any": [
+                            {
+                                "fact": "payload",
+                                "path": "$.amount.currency",
+                                "operator": "notIn",
+                                "value": {
+                                    "fact": "payee",
+                                    "path": "$.accounts[?(@.ledgerAccountType == 'POSITION' && @.isActive == 1)].currency"
+                                }
+                            },
+                            {
+                                "fact": "payload",
+                                "path": "$.amount.currency",
+                                "operator": "notIn",
+                                "value": {
+                                    "fact": "payer",
+                                    "path": "$.accounts[?(@.ledgerAccountType == 'POSITION' && @.isActive == 1)].currency"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "fact": "payload",
+                        "path": "$.payer.personalInfo.dateOfBirth",
+                        "operator": "equal",
+                        "value": ""
+                    }
+                ]
+            },
+            "event": {
+                "type": "INVALID_QUOTE_REQUEST",
+                "params": {
+                    "FSPIOPError": "MALFORMED_SYNTAX",
+                    "message": "Malformed Payer dateOfBirth"
+                }
+            }
+        },
+        {
+            "conditions": {
+                "all": [
+                    {
+                        "any": [
+                            {
+                                "fact": "payload",
+                                "path": "$.amount.currency",
+                                "operator": "notIn",
+                                "value": {
+                                    "fact": "payer",
+                                    "path": "$.accounts[?(@.ledgerAccountType == 'POSITION' && @.isActive == 1)].currency"
+                                }
+                            },
+                            {
+                                "fact": "payload",
+                                "path": "$.amount.currency",
+                                "operator": "notIn",
+                                "value": {
+                                    "fact": "payee",
+                                    "path": "$.accounts[?(@.ledgerAccountType == 'POSITION' && @.isActive == 1)].currency"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "fact": "payer",
+                        "path": "$.accounts[?(@.ledgerAccountType == 'POSITION' && @.isActive == 1)]",
+                        "operator": "isArray",
+                        "value": true
+                    }
+                ]
+            },
+            "event": {
+                "type": "INVALID_QUOTE_REQUEST",
+                "params": {
+                    "FSPIOPError": "PAYER_ERROR",
+                    "message": "Payer should not have more than 1 active currency account"
+                }
+            }
+        },
+        {
+            "conditions": {
+                "all": [
+                    {
+                        "any": [
+                            {
+                                "fact": "payload",
+                                "path": "$.amount.currency",
+                                "operator": "notIn",
+                                "value": {
+                                    "fact": "payee",
+                                    "path": "$.accounts[?(@.ledgerAccountType == 'POSITION' && @.isActive == 1)].currency"
+                                }
+                            },
+                            {
+                                "fact": "payload",
+                                "path": "$.amount.currency",
+                                "operator": "notIn",
+                                "value": {
+                                    "fact": "payer",
+                                    "path": "$.accounts[?(@.ledgerAccountType == 'POSITION' && @.isActive == 1)].currency"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "fact": "payee",
+                        "path": "$.accounts[?(@.ledgerAccountType == 'POSITION' && @.isActive == 1)]",
+                        "operator": "isArray",
+                        "value": true
+                    }
+                ]
+            },
+            "event": {
+                "type": "INVALID_QUOTE_REQUEST",
+                "params": {
+                    "FSPIOPError": "PAYEE_ERROR",
+                    "message": "Payee should not have more than 1 active currency account"
+                }
+            }
+        }
+    ]
+
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2019-12-26T11:05:07Z"
+  name: quoting-service-configmap
+  namespace: {{ default $.Release.Namespace $.Values.namespace }}
+  resourceVersion: "76083"
+  selfLink: /api/v1/namespaces/default/configmaps/quoting-service-configmap
+  uid: fe5c5419-740d-490e-bd98-0d667c098c1d

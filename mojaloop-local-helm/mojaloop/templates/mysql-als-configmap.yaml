@@ -1,0 +1,15 @@
+{{- if .Values.accountLookUp.db.enabled -}}
+apiVersion: v1
+data:
+  01_permissions.sql: |-
+    ALTER USER 'account_lookup'@'%' identified WITH mysql_native_password by 'password';
+    FLUSH PRIVILEGES;
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2019-12-24T18:00:57Z"
+  name: mysql-als-configmap
+  namespace: {{ default $.Release.Namespace $.Values.namespace }}
+  resourceVersion: "49688"
+  selfLink: /api/v1/namespaces/default/configmaps/mysql-als-configmap
+  uid: 2f21e690-29f7-4252-86d7-e8c254ee5940
+{{- end -}}

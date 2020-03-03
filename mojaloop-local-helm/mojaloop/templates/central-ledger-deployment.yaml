@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-central-ledger
+  namespace: {{ default $.Release.Namespace $.Values.namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-central-ledger
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-central-ledger
+    spec:
+      containers:
+      - args:
+        - sh
+        - -c
+        - node src/api/index.js
+        env:
+        - name: CLEDG_MONGODB__DISABLED
+          value: "false"
+        - name: CLEDG_SIDECAR__DISABLED
+          value: "true"
+        - name: LOG_LEVEL
+          value: debug
+        name: {{ .Release.Name }}-central-ledger
+        {{- with .Values.centralLedger }}
+        image: "{{ .image.name }}:{{ .image.version }}"
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - apk --no-cache add curl
+            - ;
+            - curl
+            - http://localhost:{{ .ports.containerPort }}/health
+          failureThreshold: 10
+          periodSeconds: 30
+          timeoutSeconds: 20
+        ports:
+        - containerPort: {{ .ports.containerPort }}
+        {{- end }}
+        resources: {}
+        restartPolicy: Always
+        volumeMounts:
+          - name: config-volume
+            mountPath: /opt/central-ledger/config/default.json
+            subPath: default.json
+      volumes:
+        - name: config-volume
+          configMap:
+            name: central-ledger-configmap
+status: {}

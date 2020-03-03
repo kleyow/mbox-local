@@ -1,0 +1,15 @@
+{{- if .Values.centralLedger.db.enabled -}}
+apiVersion: v1
+data:
+  01_permissions.sql: |-
+    ALTER USER 'central_ledger'@'%' identified WITH mysql_native_password by 'password';
+    FLUSH PRIVILEGES;
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2019-12-24T17:53:52Z"
+  name: mysql-configmap
+  namespace: {{ default $.Release.Namespace $.Values.namespace }}
+  resourceVersion: "48283"
+  selfLink: /api/v1/namespaces/default/configmaps/mysql-configmap
+  uid: 57601ecb-6b74-4c25-bd79-e9331edb9652
+{{- end -}}

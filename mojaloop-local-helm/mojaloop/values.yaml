@@ -1,0 +1,79 @@
+accountLookUp:
+  image:
+    name: mojaloop/account-lookup-service
+    version: v8.7.0
+  ports:
+    containerApiPort: 4002
+    nodeApiPort: 30402
+    containerAdminPort: 4001
+    nodeAdminPort: 30401
+  db:
+    user: "account_lookup"
+    password: "password"
+    host: "mysql-als"
+    port: 3306
+    schema: "account_lookup"
+    enabled: true
+
+centralLedger:
+  image:
+    name: mojaloop/central-ledger
+    version: v8.7.1
+  ports:
+    containerPort: 3001
+    nodePort: 30101
+  config:
+    functionality : "{{functionality}}"
+    action: "{{action}}"
+    participantName: "{{participantName}}"
+  db:
+    user: "central_ledger"
+    password: "password"
+    host: "mysql"
+    port: 3307
+    schema: "central_ledger"
+    enabled: true
+
+    
+centralSettlement:
+  image:
+    name: mojaloop/central-settlement
+    version: v8.6.0
+  ports:
+    containerPort: 3007
+    nodePort: 30007
+  config:
+    functionality : "{{functionality}}"
+    action: "{{action}}"
+
+mlApiAdapter:
+  image:
+    name:  mojaloop/ml-api-adapter
+    version: v8.7.2
+  ports:
+    containerPort: 3000
+    nodePort: 30011
+  config:
+    functionality : "{{functionality}}"
+    action: "{{action}}"
+
+quotingService:
+  image:
+    name:  mojaloop/quoting-service
+    version: v8.7.0.19-snapshot
+  ports:
+    containerPort: 3002
+    nodePort: 30012
+
+simulator:
+  image:
+    name: modusbox-mbx-docker.jfrog.io/simulator
+    version: v0.0.1
+  ports:
+    containerPort: 8444
+    nodePort: 30844
+
+imagePullCredentials:
+  user: mbx-cicd-deployer
+  pass: KWtgDzg4Z@7i/h,x8jgy
+  registry: modusbox-mbx-docker.jfrog.io

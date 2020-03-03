@@ -1,0 +1,19 @@
+{{- if .Values.centralLedger.db.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  namespace: {{ default $.Release.Namespace $.Values.namespace }}
+spec:
+  type: NodePort 
+  ports:
+    {{- with .Values.centralLedger }}
+    - name: {{ .db.port | quote }}
+      port: {{ .db.port }}
+      targetPort: 3306
+    {{- end }}
+  selector:
+    app: mysql
+status:
+  loadBalancer: {}
+{{- end -}}

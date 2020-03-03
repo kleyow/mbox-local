@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-simulator
+  namespace: {{ default $.Release.Namespace $.Values.namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-simulator
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-simulator
+    spec:
+      imagePullSecrets:
+        - name: "jfrog-cred"
+      containers:
+      - env:
+        - name: LOG_LEVEL
+          value: info
+        - name: PARTIES_ENDPOINT
+          value: http://{{ .Release.Name }}-account-lookup-service:{{ .Values.accountLookUp.ports.containerApiPort }}
+        - name: QUOTES_ENDPOINT
+          value: http://{{ .Release.Name }}-quoting-service:{{ .Values.quotingService.ports.containerPort }}
+        - name: TRANSFERS_ENDPOINT
+          value: http://{{ .Release.Name }}-ml-api-adapter:{{ .Values.mlApiAdapter.ports.containerPort }}
+        - name: TRANSFERS_FULFIL_RESPONSE_DISABLED
+          value: "false"
+        name: {{ .Release.Name }}-ml-api-adapter
+        {{- with .Values.simulator }}
+        image: "{{ .image.name }}:{{ .image.version }}"
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - apk --no-cache add curl
+            - ;
+            - curl
+            - http://localhost:{{ .ports.containerPort }}/health
+          failureThreshold: 10
+          periodSeconds: 30
+          timeoutSeconds: 20
+        name: cl-simulator
+        ports:
+        - containerPort: {{ .ports.containerPort }}
+        {{- end }}
+        resources: {}
+      restartPolicy: Always
+status: {}

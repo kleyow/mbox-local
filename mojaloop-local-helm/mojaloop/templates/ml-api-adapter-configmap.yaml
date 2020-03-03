@@ -1,0 +1,158 @@
+apiVersion: v1
+data:
+  default.json: |
+    {
+      "PORT": {{ .Values.mlApiAdapter.ports.containerPort }},
+      "HOSTNAME": "http://{{ .Release.Name }}-ml-api-adapter",
+      "ENDPOINT_SOURCE_URL": "http://{{ .Release.Name }}-central-ledger:{{ .Values.centralLedger.ports.containerPort }}",
+      "ENDPOINT_HEALTH_URL": "http://{{ .Release.Name }}-central-ledger:{{ .Values.centralLedger.ports.containerPort }}/health",
+      "ENDPOINT_CACHE_CONFIG": {
+        "expiresIn": 180000,
+        "generateTimeout": 30000
+      },
+      "ENDPOINT_SECURITY": {
+        "TLS": {
+          "rejectUnauthorized": true
+        }
+      },
+      "MAX_CALLBACK_TIME_LAG_DILATION_MILLISECONDS": 200,
+      "MAX_FULFIL_TIMEOUT_DURATION_SECONDS": 300,
+      "TRANSFERS": {
+        "SEND_TRANSFER_CONFIRMATION_TO_PAYEE": true
+      },
+      "AMOUNT": {
+        "PRECISION": 10,
+        "SCALE": 2
+      },
+      "HANDLERS": {
+        "DISABLED": false,
+        "API": {
+          "DISABLED": false
+        }
+      },
+      "INSTRUMENTATION": {
+        "METRICS": {
+          "DISABLED": false,
+          "config": {
+            "timeout": 5000,
+            "prefix": "moja_ml_",
+            "defaultLabels": {
+              "serviceName": "ml-service"
+            }
+          }
+        }
+      },
+      "KAFKA": {
+        "TOPIC_TEMPLATES": {
+          "GENERAL_TOPIC_TEMPLATE": {
+            "TEMPLATE": "topic-{{ .Values.mlApiAdapter.config.functionality }}-{{ .Values.mlApiAdapter.config.action }}",
+            "REGEX": "topic-(.*)-(.*)"
+          },
+          "NOTIFICATION_TOPIC_TEMPLATE": {
+            "TEMPLATE": "topic-notification-event",
+            "REGEX": "topic-notification-event"
+          },
+          "FULFIL_TOPIC_TEMPLATE": {
+            "TEMPLATE": "topic-transfer-fulfil",
+            "REGEX": "topic-transfer-fulfil"
+          },
+          "GET_TRANSFERS_TOPIC_TEMPLATE": {
+            "TEMPLATE": "topic-transfer-get",
+            "REGEX": "topic-transfer-get"
+          }
+        },
+        "CONSUMER": {
+          "NOTIFICATION": {
+            "EVENT": {
+              "config": {
+                "options": {
+                  "mode": 2,
+                  "batchSize": 1,
+                  "pollFrequency": 10,
+                  "recursiveTimeout": 100,
+                  "messageCharset": "utf8",
+                  "messageAsJSON": true,
+                  "sync": true,
+                  "consumeTimeout": 1000
+                },
+                "rdkafkaConf": {
+                  "client.id": "ml-con-notification-event",
+                  "group.id": "ml-group-notification-event",
+                  "metadata.broker.list": "kafka:29092",
+                  "socket.keepalive.enable": true
+                },
+                "topicConf": {
+                  "auto.offset.reset": "earliest"
+                }
+              }
+            }
+          }
+        },
+        "PRODUCER": {
+          "TRANSFER": {
+            "PREPARE": {
+              "config": {
+                "options": {
+                  "messageCharset": "utf8"
+                },
+                "rdkafkaConf": {
+                  "metadata.broker.list": "kafka:29092",
+                  "client.id": "ml-prod-transfer-prepare",
+                  "event_cb": true,
+                  "dr_cb": true,
+                  "socket.keepalive.enable": true,
+                  "queue.buffering.max.messages": 10000000
+                },
+                "topicConf": {
+                  "request.required.acks": "all"
+                }
+              }
+            },
+            "FULFIL": {
+              "config": {
+                "options": {
+                  "messageCharset": "utf8"
+                },
+                "rdkafkaConf": {
+                  "metadata.broker.list": "kafka:29092",
+                  "client.id": "ml-prod-transfer-fulfil",
+                  "event_cb": true,
+                  "dr_cb": true,
+                  "socket.keepalive.enable": true,
+                  "queue.buffering.max.messages": 10000000
+                },
+                "topicConf": {
+                  "request.required.acks": "all"
+                }
+              }
+            },
+            "GET": {
+              "config": {
+                "options": {
+                  "messageCharset": "utf8"
+                },
+                "rdkafkaConf": {
+                  "metadata.broker.list": "kafka:29092",
+                  "client.id": "ml-prod-transfer-get",
+                  "event_cb": true,
+                  "dr_cb": true,
+                  "socket.keepalive.enable": true,
+                  "queue.buffering.max.messages": 10000000
+                },
+                "topicConf": {
+                  "request.required.acks": "all"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2019-12-26T11:23:56Z"
+  name: ml-api-adapter-configmap
+  namespace: {{ default $.Release.Namespace $.Values.namespace }}
+  resourceVersion: "79875"
+  selfLink: /api/v1/namespaces/default/configmaps/ml-api-adapter-configmap
+  uid: 6ae2ee7c-e3a9-4b5e-89b0-f179ff5ec842
