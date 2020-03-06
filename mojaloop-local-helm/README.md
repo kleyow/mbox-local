@@ -37,6 +37,10 @@ mysql-als-64f486c559-sdc2p                                    1/1     Running   
 
 ```
 
+## Workaround.
+
+  You need to inspect if ml-api-adapter is working. Check the logs. If you see any error, please delete the pod.
+
 
 
 
@@ -169,7 +173,7 @@ If you do not have rates for this channel, you need to execute this post;
 ```
 
 
-Now, We can execute a quote request. You can go to Postman and open [this](./postman/collections/SendQuoteAndTransferEUR-MAD.postman_collection.json) collection and select __Send Quote_SEND EUR__. Be careful about the environment selected. 
+Now, We can execute a quote request. You can go to Postman and open [this](./postman/collections/SendQuoteAndTransferEUR-MAD.postman_collection.json) collection and select __Send Quote_SEND EUR__. Be careful about the environment selected. You have a local enviroment or test enviroment (add-ons)
 
 If you see logs in quoting service, you see something similar like this 
 
