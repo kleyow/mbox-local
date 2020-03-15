@@ -41,7 +41,10 @@ mysql-als-64f486c559-sdc2p                                    1/1     Running   
 
   You need to inspect if ml-api-adapter is working. Check the logs. If you see any error, please delete the pod.
 
-
+ex:
+```  
+kubectl delete pod mojaloop-ml-api-adapter-7f7d58685-6tggm  -n fxp
+```  
 
 
 ## Onboarding
