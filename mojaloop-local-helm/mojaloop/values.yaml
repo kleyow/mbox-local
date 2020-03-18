@@ -68,7 +68,9 @@ quotingService:
 simulator:
   image:
     name: modusbox-mbx-docker.jfrog.io/simulator
-    version: v0.0.1
+    version: 9.1.2
+    # name: simulator
+    # version: transferError2    
   ports:
     containerPort: 8444
     nodePort: 30844

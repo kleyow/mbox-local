@@ -1,0 +1,394 @@
+{
+	"info": {
+		"_postman_id": "689f51b4-cada-4b75-ba90-bde07ce9af45",
+		"name": "Original Error extension list",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Send Quote_SEND EUR",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "887e4721-3923-41bd-bf8a-3d0cd5eed8ee",
+						"exec": [
+							"var uuid = require('uuid');",
+							"var generatedUUID = uuid.v4();",
+							"",
+							"pm.environment.set('quoteId', generatedUUID);",
+							"generatedUUID = uuid.v4();",
+							"pm.environment.set('transactionId', generatedUUID);",
+							"pm.environment.set('quoteDate', (new Date()).toUTCString());",
+							"pm.environment.set('transferAmount', 1);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "029f9c14-13e7-4aac-ada8-572ccf2d502c",
+						"exec": [
+							"pm.test(\"Status code is 202\", function () {",
+							"    pm.response.to.have.status(202);",
+							"});",
+							"",
+							"",
+							"//Check Data on payer side",
+							"setTimeout(function () {",
+							"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/dfsp1/callbacks/\"+pm.variables.get(\"quoteId\"), function (err, response) {",
+							"      if(response.responseSize !== 0) {",
+							"          console.log('dfsp1callback response:')",
+							"          //Checking headers",
+							"            var headers = response.json().headers;",
+							"            pm.test(\"payerfsp fspiop-source is payeefsp\", function () {",
+							"                pm.expect(headers['fspiop-source']).to.eql('DFSPEUR');",
+							"            });",
+							"            ",
+							"            pm.test(\"payerfsp fspiop-destination is payerfsp\", function () {",
+							"                pm.expect(headers['fspiop-destination']).to.eql('dfsp1');",
+							"            });",
+							"            ",
+							"            pm.test(\"payerfsp content-type should be application/vnd.interoperability.quotes+json;version=1.0\", function () {",
+							"                pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.quotes+json;version=1.0');",
+							"            });",
+							"            ",
+							"            pm.test(\"payerfsp accept is empty\", function () {",
+							"                pm.expect(headers['accept']).to.eql(undefined);",
+							"            });",
+							"            ",
+							"            //Validate protected header inside Signature",
+							"            var {signature,protectedHeader} = JSON.parse(headers['fspiop-signature'])",
+							"            var decodedProtectedHeaders = JSON.parse(atob(protectedHeader))",
+							"            console.log('decodedProtectedHeaders:',decodedProtectedHeaders)",
+							"            ",
+							"            pm.test(\"FSPIOP-Signature Protected Header alg to be RS256\", function () {",
+							"                pm.expect(decodedProtectedHeaders['alg']).to.eql('RS256');",
+							"            });",
+							"            pm.test(\"FSPIOP-Signature Protected Header FSPIOP-URI to be /quotes/\"+pm.environment.get(\"quoteId\"), function () {",
+							"                pm.expect(decodedProtectedHeaders['FSPIOP-URI']).to.eql('/quotes/'+pm.environment.get(\"quoteId\"));",
+							"            });",
+							"            ",
+							"",
+							"            pm.test(\"FSPIOP-Signature Protected Header FSPIOP-HTTP-Method to be PUT\", function () {",
+							"                pm.expect(decodedProtectedHeaders['FSPIOP-HTTP-Method']).to.eql('PUT');",
+							"            });",
+							"            pm.test(\"FSPIOP-Signature Protected Header FSPIOP-Source to be mojaloop-sdk\", function () {",
+							"                pm.expect(decodedProtectedHeaders['FSPIOP-Source']).to.eql('DFSPEUR');",
+							"            });",
+							"            pm.test(\"FSPIOP-Signature Protected Header FSPIOP-Destination to be payerfsp\", function () {",
+							"                pm.expect(decodedProtectedHeaders['FSPIOP-Destination']).to.eql('dfsp1');",
+							"            });",
+							"            pm.test(\"FSPIOP-Signature Protected Header Date is present\", function () {",
+							"                pm.expect(decodedProtectedHeaders['Date']).to.not.eql(undefined);",
+							"            });",
+							"           ",
+							"            pm.test(\"payerfsp FSPIOP-URI to be /quotes/\"+pm.environment.get(\"quoteId\"), function () {",
+							"                pm.expect(headers['fspiop-uri']).to.eql('/quotes/'+pm.environment.get(\"quoteId\"));",
+							"            });",
+							"            ",
+							"            pm.test(\"payerfsp fspiop-http-method is PUT\", function () {",
+							"                pm.expect(headers['fspiop-http-method']).to.eql('PUT');",
+							"            });",
+							"            ",
+							"            var jsonData = response.json().data;",
+							"            ",
+							"            console.log(jsonData);",
+							"            ",
+							"          pm.test(\"Response fees is returned\", function () {",
+							"                pm.expect(jsonData.payeeFspFee.amount).equal(\"1\");",
+							"                ",
+							"            });",
+							"            pm.test(\"Response Commission is returned\", function () {",
+							"                pm.expect(jsonData.payeeFspCommission.amount).equal(\"1\");",
+							"                ",
+							"            });",
+							"            ",
+							"            pm.test(\"Response ilpPacket is not undefined\", function () {",
+							"                pm.expect(jsonData.ilpPacket).not.equal(undefined);",
+							"                pm.environment.set(\"ilpPacket\", jsonData.ilpPacket);",
+							"            });",
+							"       ",
+							"           pm.test(\"Response condition is not undefined\", function () {",
+							"               pm.expect(jsonData.condition).not.equal(undefined);",
+							"               pm.environment.set(\"condition\", jsonData.condition);",
+							"           });",
+							"      } else {",
+							"          pm.test(\"Quote FAILED\", function () {",
+							"            throw new Error('Did not receive response');",
+							"           });",
+							"",
+							"      }",
+							"       ",
+							"   });",
+							"}, 8000)",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TESTFSP1_BEARER_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/vnd.interoperability.quotes+json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/vnd.interoperability.quotes+json;version=1.0"
+					},
+					{
+						"key": "Date",
+						"value": "{{quoteDate}}"
+					},
+					{
+						"key": "FSPIOP-Source",
+						"value": "dfsp1"
+					},
+					{
+						"key": "FSPIOP-Destination",
+						"value": "dfsp2"
+					},
+					{
+						"key": "FSPIOP-Signature",
+						"type": "text",
+						"value": "{{fspiop-signature}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"1\",\n      \"fspId\": \"dfsp1\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"2\",\n      \"fspId\": \"dfsp2\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"1\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
+				},
+				"url": {
+					"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
+					"host": [
+						"{{HOST_QUOTING_SERVICE}}"
+					],
+					"path": [
+						"quotes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Send Transfer EUR w error",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "900142b0-e4d7-43a4-a751-38202b600661",
+						"exec": [
+							"pm.test(\"Status code is 202\", function () {",
+							"    pm.response.to.have.status(202);",
+							"});",
+							"console.log()",
+							"setTimeout(function () {",
+							"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/dfsp1/callbacks/\"+pm.environment.get(\"transfer_ID\"), function (err, response) {",
+							"          if(response.responseSize !== 0) {",
+							"            //Checking headers",
+							"            var headers = response.json().headers;",
+							"            pm.test(\"dfsp1 fspiop-source is DFSPEUR\", function () {",
+							"                pm.expect(headers['fspiop-source']).to.eql('DFSPEUR');",
+							"            });",
+							"            ",
+							"            pm.test(\"dfsp1 fspiop-destination is dfsp1\", function () {",
+							"                pm.expect(headers['fspiop-destination']).to.eql('dfsp1');",
+							"            });",
+							"            ",
+							"            pm.test(\"dfsp1 content-type should be application/vnd.interoperability.transfers+json;version=1.0\", function () {",
+							"                pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');",
+							"            });",
+							"            ",
+							"            pm.test(\"dfsp1 accept is empty\", function () {",
+							"                pm.expect(headers['accept']).to.eql(undefined);",
+							"            });",
+							"            ",
+							"            ",
+							"            pm.test(\"dfsp1 fspiop-uri includes transfers\", function () {",
+							"                pm.expect(headers['fspiop-uri']).to.include('/transfers');",
+							"            });",
+							"            ",
+							"            pm.test(\"dfsp1 fspiop-http-method is PUT\", function () {",
+							"                pm.expect(headers['fspiop-http-method']).to.eql('PUT');",
+							"            });",
+							"            ",
+							"            //validate fspiop-signature",
+							"            //Validate protected header inside Signature",
+							"            var {signature,protectedHeader} = JSON.parse(headers['fspiop-signature'])",
+							"            var decodedProtectedHeaders = JSON.parse(atob(protectedHeader))",
+							"            console.log('decodedProtectedHeaders:',decodedProtectedHeaders)",
+							"            ",
+							"            ",
+							"            pm.test(\"dfsp1 FSPIOP-Signature Protected Header alg to be RS256\", function () {",
+							"                pm.expect(decodedProtectedHeaders['alg']).to.eql('RS256');",
+							"            });",
+							"            pm.test(\"dfsp1 FSPIOP-Signature Protected Header FSPIOP-URI to be /quotes/\"+pm.environment.get(\"quoteId\"), function () {",
+							"                pm.expect(decodedProtectedHeaders['FSPIOP-URI']).to.eql('/transfers/'+pm.environment.get(\"transfer_ID\")+'/error');",
+							"            });",
+							"            ",
+							"",
+							"            pm.test(\"dfsp1 FSPIOP-Signature Protected Header FSPIOP-HTTP-Method to be PUT\", function () {",
+							"                pm.expect(decodedProtectedHeaders['FSPIOP-HTTP-Method']).to.eql('PUT');",
+							"            });",
+							"            pm.test(\"dfsp1 FSPIOP-Signature Protected Header FSPIOP-Source to be mojaloop-sdk\", function () {",
+							"                pm.expect(decodedProtectedHeaders['FSPIOP-Source']).to.eql('DFSPEUR');",
+							"            });",
+							"            pm.test(\"dfsp1 FSPIOP-Signature Protected Header FSPIOP-Destination to be payerfsp\", function () {",
+							"                pm.expect(decodedProtectedHeaders['FSPIOP-Destination']).to.eql('dfsp1');",
+							"            });",
+							"            pm.test(\"dfsp1 FSPIOP-Signature Protected Header Date is present\", function () {",
+							"                pm.expect(decodedProtectedHeaders['Date']).to.not.eql(undefined);",
+							"            });",
+							"           ",
+							"            ",
+							"            ",
+							"            var jsonData = response.json().data;",
+							"            ",
+							"            console.log('jsonData::', jsonData);",
+							"            pm.test(\"Response data has errorInformation\", function () {",
+							"               pm.expect(jsonData.errorInformation).to.be.an('object');",
+							"            });",
+							"            ",
+							"            pm.test(\"errorCode\", function () {",
+							"                pm.expect(jsonData.errorInformation.errorCode).to.eql('5104');",
+							"            });",
+							"            pm.test(\"errorDescription\", function () {",
+							"                pm.expect(jsonData.errorInformation.errorDescription).to.eql('Second leg of the Transfer rejected');",
+							"            });    ",
+							"            ",
+							"            var errorInformation = {\"errorInformation\":{\"errorCode\":\"5104\",\"errorDescription\":\"Second leg of the Transfer rejected\",\"extensionList\":{\"extension\":[{\"key\":\"originalErrorCode\",\"value\":\"5105\"},{\"key\":\"originalErrorDescription\",\"value\":\"Payee FSP rejected transaction - Payee FSP rejected transaction\"}]}}};",
+							"            ",
+							"            pm.test(\"exact error message\", function () {",
+							"               pm.expect(jsonData).to.deep.equal(errorInformation);",
+							"            });",
+							"            ",
+							"          } else {",
+							"              pm.test(\"Transfer FAILED\", function () {",
+							"                throw new Error('Did not receive response');",
+							"              });",
+							"              postman.setNextRequest(null)",
+							"          }",
+							"   });",
+							"}, 5000)",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "20820c95-0a24-4906-a6ba-708d6ecf4a61",
+						"exec": [
+							"var uuid = require('uuid');",
+							"var generatedUUID = uuid.v4();",
+							"",
+							"pm.environment.set('transfer_ID',  pm.variables.get('transactionId'));",
+							"pm.environment.set('transferDate', (new Date()).toUTCString());",
+							"pm.environment.set('transferExpiration', new Date(new Date().getTime() + 600000));",
+							"pm.environment.set('transferAmount', 1);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/vnd.interoperability.transfers+json;version=1"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/vnd.interoperability.transfers+json;version=1.0"
+					},
+					{
+						"key": "Date",
+						"value": "{{transferDate}}"
+					},
+					{
+						"key": "FSPIOP-Source",
+						"value": "dfsp1"
+					},
+					{
+						"key": "FSPIOP-Destination",
+						"value": "DFSPEUR"
+					},
+					{
+						"key": "FSPIOP-Signature",
+						"type": "text",
+						"value": "{{fspiop-signature}}"
+					},
+					{
+						"key": "FSPIOP-URI",
+						"type": "text",
+						"value": "/transfers"
+					},
+					{
+						"key": "FSPIOP-HTTP-Method",
+						"type": "text",
+						"value": "POST"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"dfsp1\",\n  \"payeeFsp\": \"DFSPEUR\",\n  \"amount\": {\n    \"amount\": \"1\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
+				},
+				"url": {
+					"raw": "{{HOST_ML_API}}/transfers",
+					"host": [
+						"{{HOST_ML_API}}"
+					],
+					"path": [
+						"transfers"
+					]
+				},
+				"description": "this must run with a simulator that returns an error"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "b6fbe884-b3e8-484f-bdbb-6f740bf8a6bd",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "f5282067-d8f4-4256-9b6c-a0c74394ae55",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

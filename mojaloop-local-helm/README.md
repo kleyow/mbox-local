@@ -7,7 +7,11 @@ The quoting service has some rules defined. These rules make it possible to requ
 For simplicity, this helm chart has to deploy in the same namespace as FXP. Because Quoting Service needs to invoke FXP for multicurrency.
 
 ```
-$ helm install --name mojaloop --namespace fxp  --debug ./mojaloop/
+helm install --name mojaloop --namespace fxp  --debug ./mojaloop/
+```
+or if you want to update only an image version or some modification on the values.yaml
+```
+helm upgrade mojaloop -f mojaloop/values.yaml --namespace fxp ./mojaloop/
 ```
 
 Then, check all pods have already run
