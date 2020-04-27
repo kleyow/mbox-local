@@ -4,6 +4,7 @@ networks:
   cl-mojaloop-net:
     name: cl-mojaloop-net
 
+
 services:
   central-ledger:
     image: mojaloop/central-ledger:v8.4.0
@@ -27,18 +28,18 @@ services:
       - mysql
       - kafka
     healthcheck:
-      test: ["CMD", "bash", "-c" ,"apk --no-cache add curl", ";", "curl", "http://localhost:3001/health"]
+      test: ["CMD", "bash", "-c" ,"apk --no-cache add curl", ";", "curl", "http://172.17.0.1:3001/health"]
       timeout: 20s
       retries: 10
       interval: 30s
 
   quoting-service:
-    image: "mojaloop/quoting-service:v8.4.0-snapshot"    
+    image: "mojaloop/quoting-service:v8.4.0-snapshot"
     container_name: qs_quoting-service
     networks:
-      - cl-mojaloop-net   
+      - cl-mojaloop-net
     depends_on:
-      - mysql      
+      - mysql
     ports:
       - "3002:3002"
     volumes:
@@ -63,7 +64,7 @@ services:
     depends_on:
       - kafka
     healthcheck:
-      test: ["CMD", "sh", "-c" ,"apk --no-cache add curl", ";", "curl", "http://localhost:3000/health"]
+      test: ["CMD", "sh", "-c" ,"apk --no-cache add curl", ";", "curl", "http://172.17.0.1:3000/health"]
       timeout: 20s
       retries: 10
       interval: 30s
@@ -94,20 +95,36 @@ services:
       interval: 30s
 
   simulator:
-    image: mojaloop/simulator:v8.3.1
+    image: mojaloop/simulator:v9.5.0
     container_name: cl_simulator
     ports:
       - "8444:8444"
     environment:
       - LOG_LEVEL=info
-      - TRANSFERS_ENDPOINT=http://ml-api-adapter:3000
-      - QUOTES_ENDPOINT=http://quoting-service:3002
-      - PARTIES_ENDPOINT=http://account-lookup-service:4002
+      - TRANSFERS_ENDPOINT=http://172.17.0.1:3000
+      - QUOTES_ENDPOINT=http://172.17.0.1:3002
+      - PARTIES_ENDPOINT=http://172.17.0.1:4002
       - TRANSFERS_FULFIL_RESPONSE_DISABLED=false
+      - TRANSACTION_REQUESTS_ENDPOINT=http://172.17.0.1:4003
     networks:
       - cl-mojaloop-net
     healthcheck:
-      test: ["CMD", "sh", "-c" ,"apk --no-cache add curl", ";", "curl", "http://localhost:8444/health"]
+      test: ["CMD", "sh", "-c" ,"apk --no-cache add curl", ";", "curl", "http://172.17.0.1:8444/health"]
+      timeout: 20s
+      retries: 10
+      interval: 30s
+
+  transaction-requests-service:
+    image: mojaloop/transaction-requests-service:v9.5.0
+    container_name: cl_transaction-requests-service
+    ports:
+      - "4003:4003"
+    volumes:
+      - ./docker/transaction-requests-service/default.json:/opt/transaction-requests-service/config/default.json
+    networks:
+      - cl-mojaloop-net
+    healthcheck:
+      test: ["CMD", "sh", "-c" ,"apk --no-cache add curl", ";", "curl", "http://172.17.0.1:4003/health"]
       timeout: 20s
       retries: 10
       interval: 30s
@@ -140,7 +157,7 @@ services:
     command:
       - "sh"
       - "-c"
-      - "sh /opt/wait-for/wait-for-central-settlement.sh && node src/server.js"    
+      - "sh /opt/wait-for/wait-for-central-settlement.sh && node src/server.js"
     networks:
       - cl-mojaloop-net
     depends_on:
@@ -151,7 +168,7 @@ services:
     volumes:
        - ./docker/central-settlement/default.json:/opt/central-settlement/config/default.json
        - ./docker/wait-for:/opt/wait-for
-  
+
   account-lookup-service:
     image: mojaloop/account-lookup-service:v8.3.0
     container_name: als_account-lookup-service
@@ -173,7 +190,7 @@ services:
       - ./docker/account-lookup-service/default.json:/opt/account-lookup-service/config/default.json
       - ./docker/wait-for:/opt/wait-for
     healthcheck:
-      test: ["CMD", "sh", "-c" ,"apk --no-cache add curl", ";", "curl", "http://localhost:4001/health"]
+      test: ["CMD", "sh", "-c" ,"apk --no-cache add curl", ";", "curl", "http://172.17.0.1:4001/health"]
       timeout: 20s
       retries: 10
       interval: 60s
@@ -199,22 +216,22 @@ services:
       start_period: 40s
       interval: 30s
 
-## DFSP 1      
+## DFSP 1
   dfsp1-backend:
     image: "mojaloop/sdk-mock-dfsp-backend:v8.3.0"
     env_file: ./dfsp1/backend.env
     ports:
       - "9000:3000"
     environment:
-      - OUTBOUND_ENDPOINT=http://dfsp1-scheme-adapter:5002
+      - OUTBOUND_ENDPOINT=http://172.17.0.1:5002
     networks:
       - cl-mojaloop-net
     depends_on:
       - dfsp1-scheme-adapter
     restart: always
-    
+
   dfsp1-scheme-adapter:
-    image: "mojaloop/sdk-scheme-adapter:v8.6.0"
+    image: "mojaloop/sdk-scheme-adapter:v9.4.0"
     env_file: ./dfsp1/scheme-adapter.env
     ports:
       - "5000:5000"
@@ -231,7 +248,7 @@ services:
     depends_on:
       - dfsp1-redis
     restart: always
-    
+
   dfsp1-redis:
     image: "redis:5.0.4-alpine"
     networks:
@@ -245,15 +262,15 @@ services:
     ports:
       - "10000:3000"
     environment:
-      - OUTBOUND_ENDPOINT=http://dfsp2-scheme-adapter:5002
+      - OUTBOUND_ENDPOINT=http://172.17.0.1:5002
     networks:
       - cl-mojaloop-net
     depends_on:
       - dfsp2-scheme-adapter
     restart: always
-      
+
   dfsp2-scheme-adapter:
-    image: "mojaloop/sdk-scheme-adapter:v8.6.0"
+    image: "mojaloop/sdk-scheme-adapter:v9.4.0"
     env_file: ./dfsp2/scheme-adapter.env
     ports:
       - "7000:5000"
@@ -270,10 +287,9 @@ services:
     depends_on:
       - dfsp2-redis
     restart: always
-      
+
   dfsp2-redis:
     image: "redis:5.0.4-alpine"
     networks:
       - cl-mojaloop-net
     restart: always
-    

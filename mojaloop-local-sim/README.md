@@ -14,7 +14,7 @@ The aim of this Document is to have a local mojaloop running with two customs DF
 
 ## Start the compose
 
-* Run this command
+* You'll need to run this twice to fix some setup bugs with ALS
 
 ```
 docker-compose up
@@ -48,6 +48,14 @@ npm install -g newman
 ```
 
 * cd to the postman folder
+
+* Use this to run all the scripts
+
+```
+sh scripts/setupDockerCompose-FullSetup.sh
+```
+
+* Setup hub account
 
 ```
 sh scripts/setupDockerCompose-HubAccount.sh
@@ -308,5 +316,42 @@ curl -v -X POST http://localhost:10000/send   -H 'Content-Type: application/json
     "transactionType": "TRANSFER",
     "note": "test",
     "homeTransactionId": "123ABC"
+}'
+```
+
+* WIP transaction requests
+
+```
+curl -v -X POST http://localhost:8444/transactionRequests -H 'FSPIOP-Source: citibank' -H 'FSPIOP-Destination: bankofamerica' -H 'Date: Sat, 25 Apr 2020 19:08:07 GMT'  -H 'Content-Type: application/vnd.interoperability.parties+json;version=1.0' -H 'Accept: application/vnd.interoperability.parties+json;version=1' -H ''  -d '{
+    "payee": {
+      "partyIdInfo": {
+          "partyIdType": "MSISDN",
+          "partyIdentifier": "123456789",
+          "fspId":"citibank"
+      }
+    },
+    "payer": {
+        "partyIdType": "MSISDN",
+        "partyIdentifier": "987654321",
+        "fspId": "bankofamerica"
+    },
+    "amount": {
+        "currency": "USD",
+        "amount": "123.45"
+    },
+    "transactionType": {
+        "scenario": "TRANSFER",
+        "subScenario": "CUSTOM_SUBSCENARIO",
+        "initiator": "PAYEE",
+        "initiatorType": "CONSUMER",
+        "refundInfo": {
+            "originalTransactionId": "25a00155-c777-4629-a6b7-61cf0d16f490",
+            "refundReason": "free text indicating reason for the refund"
+        },
+        "balanceOfPayments": "123"
+    },
+    "note": "test",
+    "transactionRequestId": "25a00155-c777-4629-a6b7-62cf0d16f499",
+    "expiration": "2020-04-26T17:50:09.474Z"
 }'
 ```
