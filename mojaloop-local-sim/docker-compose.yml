@@ -7,7 +7,7 @@ networks:
 
 services:
   central-ledger:
-    image: mojaloop/central-ledger:v8.4.0
+    image: mojaloop/central-ledger:v9.5.0
     container_name: cl_central-ledger
     command:
       - "sh"
@@ -34,7 +34,7 @@ services:
       interval: 30s
 
   quoting-service:
-    image: "mojaloop/quoting-service:v8.4.0-snapshot"
+    image: "mojaloop/quoting-service:v9.3.0.1-snapshot"
     container_name: qs_quoting-service
     networks:
       - cl-mojaloop-net
@@ -44,9 +44,10 @@ services:
       - "3002:3002"
     volumes:
       - ./docker/quoting-service/default.json:/opt/quoting-service/config/default.json
+      - ./docker/quoting-service/default.json:/opt/quoting-service/config/rules.json
 
   ml-api-adapter:
-    image: mojaloop/ml-api-adapter:v8.4.1
+    image: mojaloop/ml-api-adapter:v9.4.2
     container_name: cl_ml-api-adapter
     command:
       - "sh"
@@ -152,7 +153,7 @@ services:
       interval: 30s
 
   central-settlement:
-    image: mojaloop/central-settlement:v8.3.0
+    image: mojaloop/central-settlement:v9.3.1
     container_name: cl_central-settlement
     command:
       - "sh"
@@ -170,7 +171,7 @@ services:
        - ./docker/wait-for:/opt/wait-for
 
   account-lookup-service:
-    image: mojaloop/account-lookup-service:v8.3.0
+    image: mojaloop/account-lookup-service:v9.4.5
     container_name: als_account-lookup-service
     command:
       - "sh"
@@ -231,15 +232,15 @@ services:
     restart: always
 
   dfsp1-scheme-adapter:
-    image: "mojaloop/sdk-scheme-adapter:v9.4.0"
+    image: "mojaloop/sdk-scheme-adapter:v9.4.9"
     env_file: ./dfsp1/scheme-adapter.env
     ports:
       - "5000:5000"
       - "5002:5002"
     environment:
-      - ALS_ENDPOINT=account-lookup-service:4002
-      - QUOTES_ENDPOINT=quoting-service:3002
-      - TRANSFERS_ENDPOINT=ml-api-adapter:3000
+      - ALS_ENDPOINT=172.17.0.1:4002
+      - QUOTES_ENDPOINT=172.17.0.1:3002
+      - TRANSFERS_ENDPOINT=172.17.0.1:3000
       - BACKEND_ENDPOINT=dfsp1-backend:3000
       - CACHE_HOST=dfsp1-redis
       - DFSP_ID=citibank
@@ -270,15 +271,15 @@ services:
     restart: always
 
   dfsp2-scheme-adapter:
-    image: "mojaloop/sdk-scheme-adapter:v9.4.0"
+    image: "mojaloop/sdk-scheme-adapter:v9.4.9"
     env_file: ./dfsp2/scheme-adapter.env
     ports:
       - "7000:5000"
       - "7002:5002"
     environment:
-      - ALS_ENDPOINT=account-lookup-service:4002
-      - QUOTES_ENDPOINT=quoting-service:3002
-      - TRANSFERS_ENDPOINT=ml-api-adapter:3000
+      - ALS_ENDPOINT=172.17.0.1:4002
+      - QUOTES_ENDPOINT=172.17.0.1:3002
+      - TRANSFERS_ENDPOINT=172.17.0.1:3000
       - BACKEND_ENDPOINT=dfsp2-backend:3000
       - CACHE_HOST=dfsp2-redis
       - DFSP_ID=bankofamerica
