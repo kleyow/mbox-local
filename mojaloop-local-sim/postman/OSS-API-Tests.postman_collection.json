@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "a829b1fe-95c2-4746-b748-a7269dbacb78",
+		"_postman_id": "974a8a77-74b7-4fc4-9aed-987bdac5a49a",
 		"name": "OSS-API-Tests",
 		"description": "##Author - Sridevi Miriyala\n\n##Description:\nThis section includes testing of the behavior of the API end points including Headers and body params testing for positive and negative paths.\n\nBased on API Definition.docx updated on 2018-03-13 Version 1.0. Note - The API supports a maximum size of 65536 bytes (64 Kilobytes) in the HTTP header.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -212,6 +212,7 @@
 													"response": []
 												}
 											],
+											"protocolProfileBehavior": {},
 											"_postman_isSubFolder": true
 										},
 										{
@@ -519,9 +520,11 @@
 													"response": []
 												}
 											],
+											"protocolProfileBehavior": {},
 											"_postman_isSubFolder": true
 										}
 									],
+									"protocolProfileBehavior": {},
 									"_postman_isSubFolder": true
 								},
 								{
@@ -589,6 +592,7 @@
 													"response": []
 												}
 											],
+											"protocolProfileBehavior": {},
 											"_postman_isSubFolder": true
 										},
 										{
@@ -671,14 +675,17 @@
 													"response": []
 												}
 											],
+											"protocolProfileBehavior": {},
 											"_postman_isSubFolder": true
 										}
 									],
+									"protocolProfileBehavior": {},
 									"_postman_isSubFolder": true
 								},
 								{
 									"name": "DEL - ParticipantsByTypeAndID ( NOT IMPLEMENTED )",
 									"item": [],
+									"protocolProfileBehavior": {},
 									"_postman_isSubFolder": true
 								},
 								{
@@ -801,12 +808,15 @@
 													"response": []
 												}
 											],
+											"protocolProfileBehavior": {},
 											"_postman_isSubFolder": true
 										}
 									],
+									"protocolProfileBehavior": {},
 									"_postman_isSubFolder": true
 								}
 							],
+							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						},
 						{
@@ -1009,6 +1019,7 @@
 													"response": []
 												}
 											],
+											"protocolProfileBehavior": {},
 											"_postman_isSubFolder": true
 										},
 										{
@@ -1316,9 +1327,11 @@
 													"response": []
 												}
 											],
+											"protocolProfileBehavior": {},
 											"_postman_isSubFolder": true
 										}
 									],
+									"protocolProfileBehavior": {},
 									"_postman_isSubFolder": true
 								},
 								{
@@ -1386,6 +1399,7 @@
 													"response": []
 												}
 											],
+											"protocolProfileBehavior": {},
 											"_postman_isSubFolder": true
 										},
 										{
@@ -1468,14 +1482,17 @@
 													"response": []
 												}
 											],
+											"protocolProfileBehavior": {},
 											"_postman_isSubFolder": true
 										}
 									],
+									"protocolProfileBehavior": {},
 									"_postman_isSubFolder": true
 								},
 								{
 									"name": "DEL - ParticipantsByTypeAndID ( NOT IMPLEMENTED )",
 									"item": [],
+									"protocolProfileBehavior": {},
 									"_postman_isSubFolder": true
 								},
 								{
@@ -1598,12 +1615,15 @@
 													"response": []
 												}
 											],
+											"protocolProfileBehavior": {},
 											"_postman_isSubFolder": true
 										}
 									],
+									"protocolProfileBehavior": {},
 									"_postman_isSubFolder": true
 								}
 							],
+							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						},
 						{
@@ -1704,6 +1724,7 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -1973,6 +1994,7 @@
 													"response": []
 												}
 											],
+											"protocolProfileBehavior": {},
 											"_postman_isSubFolder": true
 										},
 										{
@@ -2362,9 +2384,11 @@
 													"response": []
 												}
 											],
+											"protocolProfileBehavior": {},
 											"_postman_isSubFolder": true
 										}
 									],
+									"protocolProfileBehavior": {},
 									"_postman_isSubFolder": true
 								},
 								{
@@ -2438,6 +2462,7 @@
 													"response": []
 												}
 											],
+											"protocolProfileBehavior": {},
 											"_postman_isSubFolder": true
 										},
 										{
@@ -2576,9 +2601,11 @@
 													"response": []
 												}
 											],
+											"protocolProfileBehavior": {},
 											"_postman_isSubFolder": true
 										}
 									],
+									"protocolProfileBehavior": {},
 									"_postman_isSubFolder": true
 								},
 								{
@@ -2652,6 +2679,7 @@
 													"response": []
 												}
 											],
+											"protocolProfileBehavior": {},
 											"_postman_isSubFolder": true
 										},
 										{
@@ -2807,6 +2835,7 @@
 													"response": []
 												}
 											],
+											"protocolProfileBehavior": {},
 											"_postman_isSubFolder": true
 										}
 									],
@@ -2832,9 +2861,11 @@
 											}
 										}
 									],
+									"protocolProfileBehavior": {},
 									"_postman_isSubFolder": true
 								}
 							],
+							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						},
 						{
@@ -3101,6 +3132,7 @@
 													"response": []
 												}
 											],
+											"protocolProfileBehavior": {},
 											"_postman_isSubFolder": true
 										},
 										{
@@ -3510,9 +3542,11 @@
 													"response": []
 												}
 											],
+											"protocolProfileBehavior": {},
 											"_postman_isSubFolder": true
 										}
 									],
+									"protocolProfileBehavior": {},
 									"_postman_isSubFolder": true
 								},
 								{
@@ -3586,6 +3620,7 @@
 													"response": []
 												}
 											],
+											"protocolProfileBehavior": {},
 											"_postman_isSubFolder": true
 										},
 										{
@@ -3724,9 +3759,11 @@
 													"response": []
 												}
 											],
+											"protocolProfileBehavior": {},
 											"_postman_isSubFolder": true
 										}
 									],
+									"protocolProfileBehavior": {},
 									"_postman_isSubFolder": true
 								},
 								{
@@ -3800,6 +3837,7 @@
 													"response": []
 												}
 											],
+											"protocolProfileBehavior": {},
 											"_postman_isSubFolder": true
 										},
 										{
@@ -3955,12 +3993,15 @@
 													"response": []
 												}
 											],
+											"protocolProfileBehavior": {},
 											"_postman_isSubFolder": true
 										}
 									],
+									"protocolProfileBehavior": {},
 									"_postman_isSubFolder": true
 								}
 							],
+							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						}
 					],
@@ -4015,6 +4056,7 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -4215,7 +4257,7 @@
 											"response": []
 										},
 										{
-											"name": "400-Missing Date header (BUG)",
+											"name": "400-Missing Date header",
 											"event": [
 												{
 													"listen": "test",
@@ -4270,7 +4312,7 @@
 											"response": []
 										},
 										{
-											"name": "400-Missing FSPIOP-Source header (BUG)",
+											"name": "400-Missing FSPIOP-Source header",
 											"event": [
 												{
 													"listen": "test",
@@ -4346,7 +4388,7 @@
 											"response": []
 										},
 										{
-											"name": "400- Missing Accept header (BUG)",
+											"name": "400- Missing Accept header",
 											"event": [
 												{
 													"listen": "test",
@@ -4489,7 +4531,7 @@
 											"response": []
 										},
 										{
-											"name": "400- Malformed ID (BUG)",
+											"name": "400- Malformed ID",
 											"event": [
 												{
 													"listen": "test",
@@ -4498,6 +4540,16 @@
 														"exec": [
 															"pm.test(\"Status code is 400\", function () {",
 															"    pm.response.to.have.status(400);",
+															"});",
+															"",
+															"var jsonData = pm.response.json();",
+															"            ",
+															"pm.test(\"Check Malformed ID - 000000\", function () {",
+															"    pm.expect(jsonData.errorInformation.errorDescription).to.include('Malformed syntax');",
+															"});            ",
+															"            ",
+															"pm.test(\"Check Error code 3101\", function () {",
+															"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3101');",
 															"});",
 															"",
 															"",
@@ -4550,7 +4602,7 @@
 											"response": []
 										},
 										{
-											"name": "400-Malformed ID (BUG)",
+											"name": "400-Malformed ID",
 											"event": [
 												{
 													"listen": "test",
@@ -4561,6 +4613,15 @@
 															"    pm.response.to.have.status(400);",
 															"});",
 															"",
+															"var jsonData = pm.response.json();",
+															"            ",
+															"pm.test(\"Check Malformed ID - 482f5eb4-67b6-####-9737-c77b0@$4706c\", function () {",
+															"    pm.expect(jsonData.errorInformation.errorDescription).to.include('Malformed syntax');",
+															"});            ",
+															"            ",
+															"pm.test(\"Check Error code 3101\", function () {",
+															"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3101');",
+															"});",
 															"",
 															"",
 															"",
@@ -4612,7 +4673,7 @@
 											"response": []
 										},
 										{
-											"name": "202-Unexistent ID-3205 (BUG)",
+											"name": "202-Unexistent ID-3000",
 											"event": [
 												{
 													"listen": "test",
@@ -4623,11 +4684,36 @@
 															"    pm.response.to.have.status(202);",
 															"});",
 															"",
-															"// collect the error at Payer simulator and do assertions later when this is fixed.",
-															"",
 															"",
 															"// FROM API Spec: 3205 - Quote ID not found -\tProvided Quote ID was not found in the server.",
-															"",
+															"setTimeout(function () {",
+															"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/callbacks/482f5ea4-67b6-431a-9737-c77b0123706c\", function (err, response) {",
+															"     if(response.responseSize !== 0) {",
+															"          console.log(response.json());",
+															"       ",
+															"       pm.test(\"Response condition is not null\", function () {",
+															"           pm.expect(response.json().condition).not.equal(null);",
+															"       });",
+															"       ",
+															"        var jsonData = response.json().data;",
+															"            ",
+															"        pm.test(\"Check Error code 3000\", function () {",
+															"            pm.expect(jsonData.errorInformation.errorCode).to.eql('3000');",
+															"        });",
+															"        ",
+															"        pm.test(\"Check Generic client error\", function () {",
+															"            pm.expect(jsonData.errorInformation.errorDescription).to.include('Generic client error');",
+															"        });",
+															"        ",
+															"      } else {",
+															"          pm.test(\"Quote FAILED\", function () {",
+															"            throw new Error('Did not receive response');",
+															"           });",
+															"           postman.setNextRequest(null);",
+															"      }",
+															"       ",
+															"   });",
+															"}, 3000);",
 															""
 														],
 														"type": "text/javascript"
@@ -4661,13 +4747,13 @@
 													}
 												],
 												"url": {
-													"raw": "{{HOST_QUOTING_SERVICE}}/quotes/482f5ea4-67b6-431a-9737-c77b0534706c",
+													"raw": "{{HOST_QUOTING_SERVICE}}/quotes/482f5ea4-67b6-431a-9737-c77b0123706c",
 													"host": [
 														"{{HOST_QUOTING_SERVICE}}"
 													],
 													"path": [
 														"quotes",
-														"482f5ea4-67b6-431a-9737-c77b0534706c"
+														"482f5ea4-67b6-431a-9737-c77b0123706c"
 													]
 												},
 												"description": "The HTTP request GET /quotes/<ID> is used to get information regarding an earlier created or requested quote. The <ID> in the URI should contain the quoteId that was used for the creation of the quote."
@@ -4675,13 +4761,99 @@
 											"response": []
 										}
 									],
+									"protocolProfileBehavior": {},
 									"_postman_isSubFolder": true
 								},
 								{
 									"name": "POST",
 									"item": [
 										{
-											"name": "RC 406 - EC 3001 - Unacceptable version (BUG)",
+											"name": "RC 400 - EC 3102 Missing mandatory element -  empty quote id",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"id": "887e4721-3923-41bd-bf8a-3d0cd5eed8ee",
+														"exec": [
+															" ",
+															"   var uuid = require('uuid');",
+															"   var generatedUUID = uuid.v4();",
+															"   pm.environment.set('quoteId2', generatedUUID);",
+															"",
+															"",
+															"   pm.environment.set('quoteDate', (new Date()).toUTCString());",
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"id": "095c973b-3b61-453c-992c-21a78b1066dc",
+														"exec": [
+															"pm.test(\"Status code is 400\", function () {",
+															"    pm.response.to.have.status(400);",
+															"});",
+															"",
+															"var jsonData = pm.response.json();",
+															"            ",
+															"pm.test(\"Check Missing mandatory element - QuoteId\", function () {",
+															"    pm.expect(jsonData.errorInformation.errorDescription).to.include('Missing mandatory element ');",
+															"});            ",
+															"            ",
+															"pm.test(\"Check Error code 3102\", function () {",
+															"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3102');",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/vnd.interoperability.quotes+json;version=1"
+													},
+													{
+														"key": "Content-Type",
+														"name": "Content-Type",
+														"value": "application/vnd.interoperability.quotes+json;version=1.0",
+														"type": "text"
+													},
+													{
+														"key": "Date",
+														"value": "{{quoteDate}}"
+													},
+													{
+														"key": "FSPIOP-Source",
+														"value": "{{payerfsp}}"
+													},
+													{
+														"key": "FSPIOP-Destination",
+														"value": "{{payeefsp}}"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"quoteId\": \"\",\n  \"transactionId\": \"{{quoteId2}}\",\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"{{receiverMSISDN}}\",\n      \"fspId\": \"{{payeefsp}}\"\n    }\n  },\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"27713803905\",\n      \"fspId\": \"{{payerfsp}}\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"15\" ,\n    \"currency\": \"XOF\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
+												},
+												"url": {
+													"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
+													"host": [
+														"{{HOST_QUOTING_SERVICE}}"
+													],
+													"path": [
+														"quotes"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "RC 406 - EC 3001 - Unacceptable version",
 											"event": [
 												{
 													"listen": "prerequest",
@@ -4710,30 +4882,15 @@
 															"    pm.response.to.have.status(406);",
 															"});",
 															"",
-															"// pm.test(\"Check that Content-Type is present\", function () {",
-															"//     pm.response.to.have.header(\"Content-Type\");",
-															"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.quotes+json;version=1.0\");",
-															"// });",
-															"",
-															"//BElow is  Example from API spec",
-															"",
-															"//       {",
-															"//     \"errorInformation\": {",
-															"//         \"errorCode\": \"3001\",",
-															"//         \"errorDescription\": \"The Client requested an unsupported version, see extension list for supported version(s).\",",
-															"//         \"extensionList\": [",
-															"//             { \"key\": \"1\", \"value\": \"0\" },",
-															"//             { \"key\": \"2\", \"value\": \"1\" },",
-															"//             { \"key\": \"4\", \"value\": \"2\" }",
-															"//         ]",
-															"//     }",
-															"// }",
-															"",
-															"",
-															"",
-															"",
-															"",
-															""
+															"var jsonData = pm.response.json();",
+															"            ",
+															"pm.test(\"Check Unacceptable version requested\", function () {",
+															"    pm.expect(jsonData.errorInformation.errorDescription).to.include('Unacceptable version requested');",
+															"});            ",
+															"            ",
+															"pm.test(\"Check Error code 3001\", function () {",
+															"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3001');",
+															"});"
 														],
 														"type": "text/javascript"
 													}
@@ -4812,10 +4969,16 @@
 															"    pm.response.to.have.status(400);",
 															"});",
 															"",
-															"// pm.test(\"Check that Content-Type is present\", function () {",
-															"//     pm.response.to.have.header(\"Content-Type\");",
-															"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.quotes+json;version=1.0\");",
-															"// });",
+															"",
+															"var jsonData = pm.response.json();",
+															"            ",
+															"pm.test(\"Check Malformed syntax - Quote ID\", function () {",
+															"    pm.expect(jsonData.errorInformation.errorDescription).to.include('Malformed syntax');",
+															"});            ",
+															"            ",
+															"pm.test(\"Check Error code 3101\", function () {",
+															"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3101');",
+															"});",
 															"",
 															"",
 															"",
@@ -4871,7 +5034,7 @@
 											"response": []
 										},
 										{
-											"name": "400 - 3101 Malformed TransactionId",
+											"name": "RC 400 - EC 3101 Malformed TransactionId",
 											"event": [
 												{
 													"listen": "prerequest",
@@ -4900,15 +5063,16 @@
 															"    pm.response.to.have.status(400);",
 															"});",
 															"",
-															"// pm.test(\"Check that Content-Type is present\", function () {",
-															"//     pm.response.to.have.header(\"Content-Type\");",
-															"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.quotes+json;version=1.0\");",
-															"// });",
 															"",
-															"",
-															"",
-															"",
-															""
+															"var jsonData = pm.response.json();",
+															"            ",
+															"pm.test(\"Check Malformed syntax - Transaction ID\", function () {",
+															"    pm.expect(jsonData.errorInformation.errorDescription).to.include('Malformed syntax');",
+															"});            ",
+															"            ",
+															"pm.test(\"Check Error code 3101\", function () {",
+															"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3101');",
+															"});"
 														],
 														"type": "text/javascript"
 													}
@@ -4985,38 +5149,15 @@
 															"pm.test(\"Status code is 400\", function () {",
 															"    pm.response.to.have.status(400);",
 															"});",
-															"",
-															"// pm.test(\"Check that Content-Type is present\", function () {",
-															"//     pm.response.to.have.header(\"Content-Type\");",
-															"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.quotes+json;version=1.0\");",
-															"// });",
-															"",
-															"",
-															"/*setTimeout(function () {",
-															"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.variables.get(\"quoteId2\"), function (err, response) {",
-															"      if(response !== null) {",
-															"          console.log(response.json());",
-															"       pm.test(\"Response ilpPacket is not null\", function () {",
-															"           pm.expect(response.json().ilpPacket).not.equal(null);",
-															"           pm.environment.set(\"ilpPacket2\", response.json().ilpPacket);",
-															"       });",
-															"       ",
-															"       pm.test(\"Response condition is not null\", function () {",
-															"           pm.expect(response.json().condition).not.equal(null);",
-															"           pm.environment.set(\"condition2\", response.json().condition);",
-															"       });",
-															"      } else {",
-															"          pm.test(\"Quote FAILED\", function () {",
-															"            throw new Error('Did not receive response');",
-															"           });",
-															"           postman.setNextRequest(null);",
-															"      }",
-															"       ",
-															"   });",
-															"}, 3000);*/",
-															"",
-															"",
-															""
+															"var jsonData = pm.response.json();",
+															"            ",
+															"pm.test(\"Check Malformed syntax - PayeePartyIdTypeEnum\", function () {",
+															"    pm.expect(jsonData.errorInformation.errorDescription).to.include('PartyIdTypeEnum');",
+															"});            ",
+															"            ",
+															"pm.test(\"Check Error code 3101\", function () {",
+															"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3101');",
+															"});"
 														],
 														"type": "text/javascript"
 													}
@@ -5065,92 +5206,6 @@
 											"response": []
 										},
 										{
-											"name": "RC 400 - Error 3101 Malformed Syntax - invalid payeePartyIdentifier",
-											"event": [
-												{
-													"listen": "prerequest",
-													"script": {
-														"id": "887e4721-3923-41bd-bf8a-3d0cd5eed8ee",
-														"exec": [
-															"if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
-															"   var uuid = require('uuid');",
-															"   var generatedUUID = uuid.v4();",
-															"   pm.environment.set('quoteId2', generatedUUID);",
-															"}",
-															"",
-															"if (pm.environment.get('CONFIG_GENERATE_NEW_PREPARE_DATE') === 'true') {",
-															"   pm.environment.set('quoteDate', (new Date()).toUTCString());",
-															"}"
-														],
-														"type": "text/javascript"
-													}
-												},
-												{
-													"listen": "test",
-													"script": {
-														"id": "095c973b-3b61-453c-992c-21a78b1066dc",
-														"exec": [
-															"pm.test(\"Status code is 400\", function () {",
-															"    pm.response.to.have.status(400);",
-															"});",
-															"",
-															"// pm.test(\"Check that Content-Type is present\", function () {",
-															"//     pm.response.to.have.header(\"Content-Type\");",
-															"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.quotes+json;version=1.0\");",
-															"// });",
-															"",
-															"",
-															"",
-															"",
-															""
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"request": {
-												"method": "POST",
-												"header": [
-													{
-														"key": "Accept",
-														"value": "application/vnd.interoperability.quotes+json;version=1"
-													},
-													{
-														"key": "Content-Type",
-														"name": "Content-Type",
-														"type": "text",
-														"value": "application/vnd.interoperability.quotes+json;version=1.0"
-													},
-													{
-														"key": "Date",
-														"value": "{{quoteDate}}"
-													},
-													{
-														"key": "FSPIOP-Source",
-														"value": "{{payerfsp}}"
-													},
-													{
-														"key": "FSPIOP-Destination",
-														"value": "{{payeefsp}}"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n  \"quoteId\": \"{{quoteId2}}\",\n  \"transactionId\": \"{{quoteId2}}\",\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"@123456\",\n      \"fspId\": \"{{payeefsp}}\"\n    }\n  },\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"27713803905\",\n      \"fspId\": \"{{payerfsp}}\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"18\",\n    \"currency\": \"XOF\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
-												},
-												"url": {
-													"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
-													"host": [
-														"{{HOST_QUOTING_SERVICE}}"
-													],
-													"path": [
-														"quotes"
-													]
-												}
-											},
-											"response": []
-										},
-										{
 											"name": "RC 400 - Error 3101 Malformed Syntax - invalid payerPartyIdType",
 											"event": [
 												{
@@ -5180,16 +5235,15 @@
 															"    pm.response.to.have.status(400);",
 															"});",
 															"",
-															"// pm.test(\"Check that Content-Type is present\", function () {",
-															"//     pm.response.to.have.header(\"Content-Type\");",
-															"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.quotes+json;version=1.0\");",
-															"// });",
-															"",
-															"",
-															"",
-															"",
-															"",
-															""
+															"var jsonData = pm.response.json();",
+															"            ",
+															"pm.test(\"Check Malformed syntax - PayerPartyIdTypeEnum\", function () {",
+															"    pm.expect(jsonData.errorInformation.errorDescription).to.include('PartyIdTypeEnum');",
+															"});            ",
+															"            ",
+															"pm.test(\"Check Error code 3101\", function () {",
+															"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3101');",
+															"});"
 														],
 														"type": "text/javascript"
 													}
@@ -5238,92 +5292,6 @@
 											"response": []
 										},
 										{
-											"name": "RC 400 - Error 3101 Malformed Syntax - invalid payerPartyIdentifier",
-											"event": [
-												{
-													"listen": "prerequest",
-													"script": {
-														"id": "887e4721-3923-41bd-bf8a-3d0cd5eed8ee",
-														"exec": [
-															"if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
-															"   var uuid = require('uuid');",
-															"   var generatedUUID = uuid.v4();",
-															"   pm.environment.set('quoteId2', generatedUUID);",
-															"}",
-															"",
-															"if (pm.environment.get('CONFIG_GENERATE_NEW_PREPARE_DATE') === 'true') {",
-															"   pm.environment.set('quoteDate', (new Date()).toUTCString());",
-															"}"
-														],
-														"type": "text/javascript"
-													}
-												},
-												{
-													"listen": "test",
-													"script": {
-														"id": "095c973b-3b61-453c-992c-21a78b1066dc",
-														"exec": [
-															"pm.test(\"Status code is 400\", function () {",
-															"    pm.response.to.have.status(400);",
-															"});",
-															"",
-															"// pm.test(\"Check that Content-Type is present\", function () {",
-															"//     pm.response.to.have.header(\"Content-Type\");",
-															"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.quotes+json;version=1.0\");",
-															"// });",
-															"",
-															"",
-															"",
-															"",
-															""
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"request": {
-												"method": "POST",
-												"header": [
-													{
-														"key": "Accept",
-														"value": "application/vnd.interoperability.quotes+json;version=1"
-													},
-													{
-														"key": "Content-Type",
-														"name": "Content-Type",
-														"type": "text",
-														"value": "application/vnd.interoperability.quotes+json;version=1.0"
-													},
-													{
-														"key": "Date",
-														"value": "{{quoteDate}}"
-													},
-													{
-														"key": "FSPIOP-Source",
-														"value": "{{payerfsp}}"
-													},
-													{
-														"key": "FSPIOP-Destination",
-														"value": "{{payeefsp}}"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n  \"quoteId\": \"{{quoteId2}}\",\n  \"transactionId\": \"{{quoteId2}}\",\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"{{receiverMSISDN}}\",\n      \"fspId\": \"{{payeefsp}}\"\n    }\n  },\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"#27713#803905\",\n      \"fspId\": \"{{payerfsp}}\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"19\",\n    \"currency\": \"XOF\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
-												},
-												"url": {
-													"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
-													"host": [
-														"{{HOST_QUOTING_SERVICE}}"
-													],
-													"path": [
-														"quotes"
-													]
-												}
-											},
-											"response": []
-										},
-										{
 											"name": "RC 400 - Error 3102 Missing mandatory element - QuoteId",
 											"event": [
 												{
@@ -5353,10 +5321,15 @@
 															"    pm.response.to.have.status(400);",
 															"});",
 															"",
-															"// pm.test(\"Check that Content-Type is present\", function () {",
-															"//     pm.response.to.have.header(\"Content-Type\");",
-															"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.quotes+json;version=1.0\");",
-															"// });",
+															"var jsonData = pm.response.json();",
+															"            ",
+															"pm.test(\"Check Missing mandatory element - QuoteID\", function () {",
+															"    pm.expect(jsonData.errorInformation.errorDescription).to.include('Missing mandatory element');",
+															"});            ",
+															"            ",
+															"pm.test(\"Check Error code 3102\", function () {",
+															"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3102');",
+															"});",
 															"",
 															"",
 															"",
@@ -5439,10 +5412,16 @@
 															"    pm.response.to.have.status(400);",
 															"});",
 															"",
-															"// pm.test(\"Check that Content-Type is present\", function () {",
-															"//     pm.response.to.have.header(\"Content-Type\");",
-															"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.quotes+json;version=1.0\");",
-															"// });",
+															"var jsonData = pm.response.json();",
+															"            ",
+															"pm.test(\"Check Missing mandatory element - TransactionID\", function () {",
+															"    pm.expect(jsonData.errorInformation.errorDescription).to.include('Missing mandatory element');",
+															"});            ",
+															"            ",
+															"pm.test(\"Check Error code 3102\", function () {",
+															"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3102');",
+															"});",
+															"",
 															"",
 															"",
 															"",
@@ -5525,10 +5504,16 @@
 															"pm.test(\"Status code is 400\", function () {",
 															"    pm.response.to.have.status(400);",
 															"});",
-															"// pm.test(\"Check that Content-Type is present\", function () {",
-															"//     pm.response.to.have.header(\"Content-Type\");",
-															"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.quotes+json;version=1.0\");",
-															"// });",
+															"",
+															"var jsonData = pm.response.json();",
+															"            ",
+															"pm.test(\"Check Missing mandatory element - PartyIdTypeEnum\", function () {",
+															"    pm.expect(jsonData.errorInformation.errorDescription).to.include('Missing mandatory element');",
+															"});            ",
+															"            ",
+															"pm.test(\"Check Error code 3102\", function () {",
+															"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3102');",
+															"});",
 															"",
 															"",
 															"",
@@ -5611,10 +5596,16 @@
 															"pm.test(\"Status code is 400\", function () {",
 															"    pm.response.to.have.status(400);",
 															"});",
-															"// pm.test(\"Check that Content-Type is present\", function () {",
-															"//     pm.response.to.have.header(\"Content-Type\");",
-															"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.quotes+json;version=1.0\");",
-															"// });",
+															"",
+															"var jsonData = pm.response.json();",
+															"            ",
+															"pm.test(\"Check Missing mandatory element - PartyIdTypeEnum\", function () {",
+															"    pm.expect(jsonData.errorInformation.errorDescription).to.include('Missing mandatory element');",
+															"});            ",
+															"            ",
+															"pm.test(\"Check Error code 3102\", function () {",
+															"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3102');",
+															"});",
 															"",
 															"",
 															"",
@@ -5697,10 +5688,16 @@
 															"pm.test(\"Status code is 400\", function () {",
 															"    pm.response.to.have.status(400);",
 															"});",
-															"// pm.test(\"Check that Content-Type is present\", function () {",
-															"//     pm.response.to.have.header(\"Content-Type\");",
-															"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.quotes+json;version=1.0\");",
-															"// });",
+															"",
+															"var jsonData = pm.response.json();",
+															"            ",
+															"pm.test(\"Check Missing mandatory element - PartyIdTypeEnum\", function () {",
+															"    pm.expect(jsonData.errorInformation.errorDescription).to.include('Missing mandatory element');",
+															"});            ",
+															"            ",
+															"pm.test(\"Check Error code 3102\", function () {",
+															"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3102');",
+															"});",
 															"",
 															"",
 															"",
@@ -5783,37 +5780,15 @@
 															"    pm.response.to.have.status(400);",
 															"});",
 															"",
-															"// pm.test(\"Check that Content-Type is present\", function () {",
-															"//     pm.response.to.have.header(\"Content-Type\");",
-															"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.quotes+json;version=1.0\");",
-															"// });",
-															"",
-															"",
-															"setTimeout(function () {",
-															"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.variables.get(\"quoteId2\"), function (err, response) {",
-															"      if(response !== null) {",
-															"          console.log(response.json());",
-															"       pm.test(\"Response ilpPacket is not null\", function () {",
-															"           pm.expect(response.json().ilpPacket).not.equal(null);",
-															"           pm.environment.set(\"ilpPacket2\", response.json().ilpPacket);",
-															"       });",
-															"       ",
-															"       pm.test(\"Response condition is not null\", function () {",
-															"           pm.expect(response.json().condition).not.equal(null);",
-															"           pm.environment.set(\"condition2\", response.json().condition);",
-															"       });",
-															"      } else {",
-															"          pm.test(\"Quote FAILED\", function () {",
-															"            throw new Error('Did not receive response');",
-															"           });",
-															"           postman.setNextRequest(null);",
-															"      }",
-															"       ",
-															"   });",
-															"}, 3000);",
-															"",
-															"",
-															""
+															"var jsonData = pm.response.json();",
+															"            ",
+															"pm.test(\"Check Missing mandatory element - PartyIdTypeEnum\", function () {",
+															"    pm.expect(jsonData.errorInformation.errorDescription).to.include('Missing mandatory element');",
+															"});            ",
+															"            ",
+															"pm.test(\"Check Error code 3102\", function () {",
+															"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3102');",
+															"});"
 														],
 														"type": "text/javascript"
 													}
@@ -5862,7 +5837,7 @@
 											"response": []
 										},
 										{
-											"name": "RC 400 - Error 3106 Modified request - payeePartyIdType - Quote1",
+											"name": "Check_RC 400 - Error 3106 Modified request - payeePartyIdType - Quote1",
 											"event": [
 												{
 													"listen": "prerequest",
@@ -5949,7 +5924,7 @@
 											"response": []
 										},
 										{
-											"name": "RC 400 - Error 3106 Modified request - payeePartyIdType - Quote2",
+											"name": "Check_RC 400 - Error 3106 Modified request - payeePartyIdType - Quote2",
 											"event": [
 												{
 													"listen": "prerequest",
@@ -6031,7 +6006,7 @@
 											"response": []
 										},
 										{
-											"name": "RC 400 - Error 3201 Destination fsp cannot be found",
+											"name": "RaiseBug_RC 400 - Error 3201 Destination fsp cannot be found",
 											"event": [
 												{
 													"listen": "prerequest",
@@ -6056,14 +6031,38 @@
 													"script": {
 														"id": "095c973b-3b61-453c-992c-21a78b1066dc",
 														"exec": [
-															"pm.test(\"Status code is 400\", function () {",
-															"    pm.response.to.have.status(400);",
+															"pm.test(\"Status code is 202\", function () {",
+															"    pm.response.to.have.status(202);",
 															"});",
 															"",
-															"// pm.test(\"Check that Content-Type is present\", function () {",
-															"//     pm.response.to.have.header(\"Content-Type\");",
-															"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.quotes+json;version=1.0\");",
-															"// });",
+															"setTimeout(function () {",
+															"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/callbacks/\"+pm.variables.get(\"quoteId2\"), function (err, response) {",
+															"      if(response !== null) {",
+															"          console.log(response.json());",
+															"       pm.test(\"Response ilpPacket is not null\", function () {",
+															"           pm.expect(response.json().ilpPacket).not.equal(null);",
+															"           pm.environment.set(\"ilpPacket2\", response.json().ilpPacket);",
+															"       });",
+															"       ",
+															"    //   var jsonData = response.json().errorinformation();",
+															"            ",
+															"    //     pm.test(\"Check Missing mandatory element - Destination fsp not found\", function (){",
+															"    //         pm.expect(jsonData.errorInformation.errorDescription).to.include('Unsupported participan');",
+															"    //     });            ",
+															"            ",
+															"    //     pm.test(\"Check Error code 3100\", function () {",
+															"    //         pm.expect(jsonData.errorInformation.errorCode).to.eql('3100');",
+															"    //     });",
+															"       ",
+															"      } else {",
+															"          pm.test(\"Quote FAILED\", function () {",
+															"            throw new Error('Did not receive response');",
+															"           });",
+															"           postman.setNextRequest(null);",
+															"      }",
+															"       ",
+															"   });",
+															"}, 3000);",
 															"",
 															"",
 															"",
@@ -6118,7 +6117,7 @@
 											"response": []
 										},
 										{
-											"name": "RC 400 - Error 3204 Party not found",
+											"name": "check_RC 400 - Error 3204 Party not found",
 											"event": [
 												{
 													"listen": "prerequest",
@@ -6143,14 +6142,36 @@
 													"script": {
 														"id": "095c973b-3b61-453c-992c-21a78b1066dc",
 														"exec": [
-															"pm.test(\"Status code is 400\", function () {",
-															"    pm.response.to.have.status(400);",
+															"pm.test(\"Status code is 202\", function () {",
+															"    pm.response.to.have.status(202);",
 															"});",
 															"",
-															"// pm.test(\"Check that Content-Type is present\", function () {",
-															"//     pm.response.to.have.header(\"Content-Type\");",
-															"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.quotes+json;version=1.0\");",
-															"// });",
+															"",
+															"",
+															"setTimeout(function () {",
+															"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/callbacks/\"+pm.variables.get(\"quoteId2\"), function (err, response) {",
+															"      if(response !== null) {",
+															"          console.log(response.json());",
+															"       pm.test(\"Response ilpPacket is not null\", function () {",
+															"           pm.expect(response.json().ilpPacket).not.equal(null);",
+															"           pm.environment.set(\"ilpPacket2\", response.json().ilpPacket);",
+															"       });",
+															"       ",
+															"      } else {",
+															"          pm.test(\"Quote FAILED\", function () {",
+															"            throw new Error('Did not receive response');",
+															"           });",
+															"           postman.setNextRequest(null);",
+															"      }",
+															"       ",
+															"   });",
+															"}, 3000);",
+															"",
+															"",
+															"",
+															"",
+															"",
+															"",
 															"",
 															"",
 															"",
@@ -6234,10 +6255,15 @@
 															"    pm.response.to.have.status(400);",
 															"});",
 															"",
-															"// pm.test(\"Check that Content-Type is present\", function () {",
-															"//     pm.response.to.have.header(\"Content-Type\");",
-															"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.quotes+json;version=1.0\");",
-															"// });",
+															"var jsonData = pm.response.json();",
+															"            ",
+															"pm.test(\"Check Malformed syntax - PartyIdTypeEnum\", function () {",
+															"    pm.expect(jsonData.errorInformation.errorDescription).to.include('Malformed syntax');",
+															"});            ",
+															"            ",
+															"pm.test(\"Check Error code 3101\", function () {",
+															"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3101');",
+															"});",
 															"",
 															"",
 															"",
@@ -6319,16 +6345,34 @@
 															"pm.test(\"Status code is 202\", function () {",
 															"    pm.response.to.have.status(202);",
 															"});",
-															"",
-															"// pm.test(\"Check that Content-Type is present\", function () {",
-															"//     pm.response.to.have.header(\"Content-Type\");",
-															"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.quotes+json;version=1.0\");",
-															"// });",
-															"",
-															"",
-															"",
-															"",
-															"",
+															"setTimeout(function () {",
+															"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/callbacks/\"+pm.variables.get(\"quoteId2\"), function (err, response) {",
+															"      if(response !== null) {",
+															"          console.log(response.json());",
+															"       pm.test(\"Response ilpPacket is not null\", function () {",
+															"           pm.expect(response.json().ilpPacket).not.equal(null);",
+															"           pm.environment.set(\"ilpPacket2\", response.json().ilpPacket);",
+															"       });",
+															"       ",
+															"    //   var jsonData = response.json().errorinformation();",
+															"            ",
+															"    //     pm.test(\"Check Missing mandatory element - Destination fsp not found\", function (){",
+															"    //         pm.expect(jsonData.errorInformation.errorDescription).to.include('Unsupported participan');",
+															"    //     });            ",
+															"            ",
+															"    //     pm.test(\"Check Error code 3100\", function () {",
+															"    //         pm.expect(jsonData.errorInformation.errorCode).to.eql('3100');",
+															"    //     });",
+															"       ",
+															"      } else {",
+															"          pm.test(\"Quote FAILED\", function () {",
+															"            throw new Error('Did not receive response');",
+															"           });",
+															"           postman.setNextRequest(null);",
+															"      }",
+															"       ",
+															"   });",
+															"}, 3000);",
 															""
 														],
 														"type": "text/javascript"
@@ -7915,8 +7959,94 @@
 												}
 											},
 											"response": []
+										},
+										{
+											"name": "RC 400 - EC 3102 Missing mandatory element - empty transaction id ",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"id": "887e4721-3923-41bd-bf8a-3d0cd5eed8ee",
+														"exec": [
+															" ",
+															"   var uuid = require('uuid');",
+															"   var generatedUUID = uuid.v4();",
+															"   pm.environment.set('quoteId2', generatedUUID);",
+															"",
+															"",
+															"   pm.environment.set('quoteDate', (new Date()).toUTCString());",
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"id": "095c973b-3b61-453c-992c-21a78b1066dc",
+														"exec": [
+															"pm.test(\"Status code is 400\", function () {",
+															"    pm.response.to.have.status(400);",
+															"});",
+															"",
+															"var jsonData = pm.response.json();",
+															"            ",
+															"pm.test(\"Check Missing mandatory element - TransactionId\", function () {",
+															"    pm.expect(jsonData.errorInformation.errorDescription).to.include('Missing mandatory element ');",
+															"});            ",
+															"            ",
+															"pm.test(\"Check Error code 3102\", function () {",
+															"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3102');",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/vnd.interoperability.quotes+json;version=1"
+													},
+													{
+														"key": "Content-Type",
+														"name": "Content-Type",
+														"value": "application/vnd.interoperability.quotes+json;version=1.0",
+														"type": "text"
+													},
+													{
+														"key": "Date",
+														"value": "{{quoteDate}}"
+													},
+													{
+														"key": "FSPIOP-Source",
+														"value": "{{payerfsp}}"
+													},
+													{
+														"key": "FSPIOP-Destination",
+														"value": "{{payeefsp}}"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"quoteId\": \"{{quoteId2}}\",\n  \"transactionId\": \"\",\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"{{receiverMSISDN}}\",\n      \"fspId\": \"{{payeefsp}}\"\n    }\n  },\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"27713803905\",\n      \"fspId\": \"{{payerfsp}}\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"15\" ,\n    \"currency\": \"XOF\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
+												},
+												"url": {
+													"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
+													"host": [
+														"{{HOST_QUOTING_SERVICE}}"
+													],
+													"path": [
+														"quotes"
+													]
+												}
+											},
+											"response": []
 										}
 									],
+									"protocolProfileBehavior": {},
 									"_postman_isSubFolder": true
 								},
 								{
@@ -8145,6 +8275,7 @@
 													"response": []
 												}
 											],
+											"protocolProfileBehavior": {},
 											"_postman_isSubFolder": true
 										},
 										{
@@ -8381,6 +8512,7 @@
 													"response": []
 												}
 											],
+											"protocolProfileBehavior": {},
 											"_postman_isSubFolder": true
 										},
 										{
@@ -8617,13 +8749,16 @@
 													"response": []
 												}
 											],
+											"protocolProfileBehavior": {},
 											"_postman_isSubFolder": true
 										}
 									],
+									"protocolProfileBehavior": {},
 									"_postman_isSubFolder": true
 								}
 							],
 							"description": "Folder for quotes",
+							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						},
 						{
@@ -8911,6 +9046,7 @@
 						}
 					],
 					"description": "Folder for quotes",
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -9131,6 +9267,7 @@
 											"response": []
 										}
 									],
+									"protocolProfileBehavior": {},
 									"_postman_isSubFolder": true
 								},
 								{
@@ -9459,6 +9596,7 @@
 											}
 										}
 									],
+									"protocolProfileBehavior": {},
 									"_postman_isSubFolder": true
 								}
 							],
@@ -9485,6 +9623,7 @@
 									}
 								}
 							],
+							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						},
 						{
@@ -10760,6 +10899,7 @@
 											}
 										}
 									],
+									"protocolProfileBehavior": {},
 									"_postman_isSubFolder": true
 								},
 								{
@@ -12249,6 +12389,7 @@
 									"response": []
 								}
 							],
+							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						},
 						{
@@ -12400,6 +12541,7 @@
 											"response": []
 										}
 									],
+									"protocolProfileBehavior": {},
 									"_postman_isSubFolder": true
 								},
 								{
@@ -12592,6 +12734,7 @@
 											"response": []
 										}
 									],
+									"protocolProfileBehavior": {},
 									"_postman_isSubFolder": true
 								}
 							],
@@ -12617,6 +12760,7 @@
 									}
 								}
 							],
+							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						},
 						{
@@ -12704,10 +12848,12 @@
 									}
 								}
 							],
+							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						}
 					],
 					"description": "Folder for transfers",
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -12951,6 +13097,7 @@
 						}
 					],
 					"description": "Folder for bulkTransfers",
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -13194,6 +13341,7 @@
 						}
 					],
 					"description": "Folder for transactionRequests",
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -13361,6 +13509,7 @@
 						}
 					],
 					"description": "Folder for transactions",
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -13528,6 +13677,7 @@
 						}
 					],
 					"description": "Folder for authorizations",
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				}
 			],
@@ -13553,7 +13703,8 @@
 						]
 					}
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "bulkQuotes ( NO IMPLEMENTATION )",
@@ -13795,7 +13946,8 @@
 					"response": []
 				}
 			],
-			"description": "Folder for bulkQuotes"
+			"description": "Folder for bulkQuotes",
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "Admin-API",
@@ -14221,6 +14373,7 @@
 							]
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -15109,6 +15262,7 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -15917,6 +16071,7 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -16137,6 +16292,7 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -16491,6 +16647,7 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -16650,6 +16807,7 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				}
 			],
@@ -16675,7 +16833,8 @@
 						]
 					}
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "Settlements-API",
@@ -17011,6 +17170,7 @@
 									"response": []
 								}
 							],
+							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						},
 						{
@@ -17486,6 +17646,7 @@
 									"response": []
 								}
 							],
+							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						},
 						{
@@ -19497,10 +19658,12 @@
 									"response": []
 								}
 							],
+							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						}
 					],
 					"description": "Folder for settlementWindows",
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -19851,6 +20014,7 @@
 									"response": []
 								}
 							],
+							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						},
 						{
@@ -20652,6 +20816,7 @@
 									"response": []
 								}
 							],
+							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						},
 						{
@@ -20727,6 +20892,7 @@
 									"response": []
 								}
 							],
+							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						},
 						{
@@ -20990,6 +21156,7 @@
 									"response": []
 								}
 							],
+							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						},
 						{
@@ -21380,6 +21547,7 @@
 									"response": []
 								}
 							],
+							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						},
 						{
@@ -21438,6 +21606,7 @@
 									}
 								}
 							],
+							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						},
 						{
@@ -21465,6 +21634,7 @@
 									}
 								}
 							],
+							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						},
 						{
@@ -21500,10 +21670,12 @@
 									"response": []
 								}
 							],
+							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						}
 					],
 					"description": "Folder for settlements",
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				}
 			],
@@ -21529,7 +21701,8 @@
 						]
 					}
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "Metrics-API",
@@ -21717,7 +21890,8 @@
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "FundsIn-API",
@@ -22033,7 +22207,8 @@
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "FundsOut-API",
@@ -22296,6 +22471,7 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -22557,14 +22733,17 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
 					"name": "Abort",
 					"item": [],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "ALS-API",
@@ -22917,9 +23096,11 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		}
 	],
 	"event": [
@@ -22943,5 +23124,6 @@
 				]
 			}
 		}
-	]
+	],
+	"protocolProfileBehavior": {}
 }

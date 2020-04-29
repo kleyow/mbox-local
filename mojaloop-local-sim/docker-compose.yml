@@ -7,7 +7,7 @@ networks:
 
 services:
   central-ledger:
-    image: mojaloop/central-ledger:v8.4.0
+    image: mojaloop/central-ledger:v9.5.2
     container_name: cl_central-ledger
     command:
       - "sh"
