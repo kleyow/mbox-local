@@ -4,7 +4,6 @@ networks:
   cl-mojaloop-net:
     name: cl-mojaloop-net
 
-
 services:
   central-ledger:
     image: mojaloop/central-ledger:v9.5.2
@@ -32,6 +31,23 @@ services:
       timeout: 20s
       retries: 10
       interval: 30s
+    extra_hosts:
+      - "central-ledger.local:172.17.0.1"
+      - "central-settlement.local:172.17.0.1"
+      - "ml-api-adapter.local:172.17.0.1"
+      - "account-lookup-service.local:172.17.0.1"
+      - "account-lookup-service-admin.local:172.17.0.1"
+      - "quoting-service.local:172.17.0.1"
+      - "moja-simulator.local:172.17.0.1"
+      - "central-ledger:172.17.0.1"
+      - "central-settlement:172.17.0.1"
+      - "ml-api-adapter:172.17.0.1"
+      - "account-lookup-service:172.17.0.1"
+      - "account-lookup-service-admin:172.17.0.1"
+      - "quoting-service:172.17.0.1"
+      - "simulator:172.17.0.1"
+      - "host.docker.internal:172.17.0.1"
+      - "simulator.local:172.17.0.1"
 
   quoting-service:
     image: "mojaloop/quoting-service:v8.4.0-snapshot"
@@ -44,6 +60,23 @@ services:
       - "3002:3002"
     volumes:
       - ./docker/quoting-service/default.json:/opt/quoting-service/config/default.json
+    extra_hosts:
+      - "central-ledger.local:172.17.0.1"
+      - "central-settlement.local:172.17.0.1"
+      - "ml-api-adapter.local:172.17.0.1"
+      - "account-lookup-service.local:172.17.0.1"
+      - "account-lookup-service-admin.local:172.17.0.1"
+      - "quoting-service.local:172.17.0.1"
+      - "moja-simulator.local:172.17.0.1"
+      - "central-ledger:172.17.0.1"
+      - "central-settlement:172.17.0.1"
+      - "ml-api-adapter:172.17.0.1"
+      - "account-lookup-service:172.17.0.1"
+      - "account-lookup-service-admin:172.17.0.1"
+      - "quoting-service:172.17.0.1"
+      - "simulator:172.17.0.1"
+      - "host.docker.internal:172.17.0.1"
+      - "simulator.local:172.17.0.1"
 
   ml-api-adapter:
     image: mojaloop/ml-api-adapter:v8.4.1
@@ -68,6 +101,23 @@ services:
       timeout: 20s
       retries: 10
       interval: 30s
+    extra_hosts:
+      - "central-ledger.local:172.17.0.1"
+      - "central-settlement.local:172.17.0.1"
+      - "ml-api-adapter.local:172.17.0.1"
+      - "account-lookup-service.local:172.17.0.1"
+      - "account-lookup-service-admin.local:172.17.0.1"
+      - "quoting-service.local:172.17.0.1"
+      - "moja-simulator.local:172.17.0.1"
+      - "central-ledger:172.17.0.1"
+      - "central-settlement:172.17.0.1"
+      - "ml-api-adapter:172.17.0.1"
+      - "account-lookup-service:172.17.0.1"
+      - "account-lookup-service-admin:172.17.0.1"
+      - "quoting-service:172.17.0.1"
+      - "simulator:172.17.0.1"
+      - "host.docker.internal:172.17.0.1"
+      - "simulator.local:172.17.0.1"
 
   mysql:
     image: mysql/mysql-server
@@ -113,6 +163,23 @@ services:
       timeout: 20s
       retries: 10
       interval: 30s
+    extra_hosts:
+      - "central-ledger.local:172.17.0.1"
+      - "central-settlement.local:172.17.0.1"
+      - "ml-api-adapter.local:172.17.0.1"
+      - "account-lookup-service.local:172.17.0.1"
+      - "account-lookup-service-admin.local:172.17.0.1"
+      - "quoting-service.local:172.17.0.1"
+      - "moja-simulator.local:172.17.0.1"
+      - "central-ledger:172.17.0.1"
+      - "central-settlement:172.17.0.1"
+      - "ml-api-adapter:172.17.0.1"
+      - "account-lookup-service:172.17.0.1"
+      - "account-lookup-service-admin:172.17.0.1"
+      - "quoting-service:172.17.0.1"
+      - "simulator:172.17.0.1"
+      - "host.docker.internal:172.17.0.1"
+      - "simulator.local:172.17.0.1"
 
   transaction-requests-service:
     image: mojaloop/transaction-requests-service:v9.5.0
@@ -128,6 +195,23 @@ services:
       timeout: 20s
       retries: 10
       interval: 30s
+    extra_hosts:
+      - "central-ledger.local:172.17.0.1"
+      - "central-settlement.local:172.17.0.1"
+      - "ml-api-adapter.local:172.17.0.1"
+      - "account-lookup-service.local:172.17.0.1"
+      - "account-lookup-service-admin.local:172.17.0.1"
+      - "quoting-service.local:172.17.0.1"
+      - "moja-simulator.local:172.17.0.1"
+      - "central-ledger:172.17.0.1"
+      - "central-settlement:172.17.0.1"
+      - "ml-api-adapter:172.17.0.1"
+      - "account-lookup-service:172.17.0.1"
+      - "account-lookup-service-admin:172.17.0.1"
+      - "quoting-service:172.17.0.1"
+      - "simulator:172.17.0.1"
+      - "host.docker.internal:172.17.0.1"
+      - "simulator.local:172.17.0.1"
 
   kafka:
     image: johnnypark/kafka-zookeeper:2.3.0
@@ -194,6 +278,23 @@ services:
       timeout: 20s
       retries: 10
       interval: 60s
+    extra_hosts:
+      - "central-ledger.local:172.17.0.1"
+      - "central-settlement.local:172.17.0.1"
+      - "ml-api-adapter.local:172.17.0.1"
+      - "account-lookup-service.local:172.17.0.1"
+      - "account-lookup-service-admin.local:172.17.0.1"
+      - "quoting-service.local:172.17.0.1"
+      - "moja-simulator.local:172.17.0.1"
+      - "central-ledger:172.17.0.1"
+      - "central-settlement:172.17.0.1"
+      - "ml-api-adapter:172.17.0.1"
+      - "account-lookup-service:172.17.0.1"
+      - "account-lookup-service-admin:172.17.0.1"
+      - "quoting-service:172.17.0.1"
+      - "simulator:172.17.0.1"
+      - "host.docker.internal:172.17.0.1"
+      - "simulator.local:172.17.0.1"
 
   mysql-als:
     image: mysql/mysql-server
@@ -223,12 +324,29 @@ services:
     ports:
       - "9000:3000"
     environment:
-      - OUTBOUND_ENDPOINT=http://172.17.0.1:5002
+      - OUTBOUND_ENDPOINT=http://dfsp1-scheme-adapter:5002
     networks:
       - cl-mojaloop-net
     depends_on:
       - dfsp1-scheme-adapter
     restart: always
+    extra_hosts:
+      - "central-ledger.local:172.17.0.1"
+      - "central-settlement.local:172.17.0.1"
+      - "ml-api-adapter.local:172.17.0.1"
+      - "account-lookup-service.local:172.17.0.1"
+      - "account-lookup-service-admin.local:172.17.0.1"
+      - "quoting-service.local:172.17.0.1"
+      - "moja-simulator.local:172.17.0.1"
+      - "central-ledger:172.17.0.1"
+      - "central-settlement:172.17.0.1"
+      - "ml-api-adapter:172.17.0.1"
+      - "account-lookup-service:172.17.0.1"
+      - "account-lookup-service-admin:172.17.0.1"
+      - "quoting-service:172.17.0.1"
+      - "simulator:172.17.0.1"
+      - "host.docker.internal:172.17.0.1"
+      - "simulator.local:172.17.0.1"
 
   dfsp1-scheme-adapter:
     image: "mojaloop/sdk-scheme-adapter:v9.4.0"
@@ -248,7 +366,24 @@ services:
     depends_on:
       - dfsp1-redis
     restart: always
-
+    extra_hosts:
+      - "central-ledger.local:172.17.0.1"
+      - "central-settlement.local:172.17.0.1"
+      - "ml-api-adapter.local:172.17.0.1"
+      - "account-lookup-service.local:172.17.0.1"
+      - "account-lookup-service-admin.local:172.17.0.1"
+      - "quoting-service.local:172.17.0.1"
+      - "moja-simulator.local:172.17.0.1"
+      - "central-ledger:172.17.0.1"
+      - "central-settlement:172.17.0.1"
+      - "ml-api-adapter:172.17.0.1"
+      - "account-lookup-service:172.17.0.1"
+      - "account-lookup-service-admin:172.17.0.1"
+      - "quoting-service:172.17.0.1"
+      - "simulator:172.17.0.1"
+      - "host.docker.internal:172.17.0.1"
+      - "simulator.local:172.17.0.1"
+      
   dfsp1-redis:
     image: "redis:5.0.4-alpine"
     networks:
@@ -262,12 +397,29 @@ services:
     ports:
       - "10000:3000"
     environment:
-      - OUTBOUND_ENDPOINT=http://172.17.0.1:5002
+      - OUTBOUND_ENDPOINT=http://dfsp2-scheme-adapter:5002
     networks:
       - cl-mojaloop-net
     depends_on:
       - dfsp2-scheme-adapter
     restart: always
+    extra_hosts:
+      - "central-ledger.local:172.17.0.1"
+      - "central-settlement.local:172.17.0.1"
+      - "ml-api-adapter.local:172.17.0.1"
+      - "account-lookup-service.local:172.17.0.1"
+      - "account-lookup-service-admin.local:172.17.0.1"
+      - "quoting-service.local:172.17.0.1"
+      - "moja-simulator.local:172.17.0.1"
+      - "central-ledger:172.17.0.1"
+      - "central-settlement:172.17.0.1"
+      - "ml-api-adapter:172.17.0.1"
+      - "account-lookup-service:172.17.0.1"
+      - "account-lookup-service-admin:172.17.0.1"
+      - "quoting-service:172.17.0.1"
+      - "simulator:172.17.0.1"
+      - "host.docker.internal:172.17.0.1"
+      - "simulator.local:172.17.0.1"
 
   dfsp2-scheme-adapter:
     image: "mojaloop/sdk-scheme-adapter:v9.4.0"
@@ -287,6 +439,23 @@ services:
     depends_on:
       - dfsp2-redis
     restart: always
+    extra_hosts:
+      - "central-ledger.local:172.17.0.1"
+      - "central-settlement.local:172.17.0.1"
+      - "ml-api-adapter.local:172.17.0.1"
+      - "account-lookup-service.local:172.17.0.1"
+      - "account-lookup-service-admin.local:172.17.0.1"
+      - "quoting-service.local:172.17.0.1"
+      - "moja-simulator.local:172.17.0.1"
+      - "central-ledger:172.17.0.1"
+      - "central-settlement:172.17.0.1"
+      - "ml-api-adapter:172.17.0.1"
+      - "account-lookup-service:172.17.0.1"
+      - "account-lookup-service-admin:172.17.0.1"
+      - "quoting-service:172.17.0.1"
+      - "simulator:172.17.0.1"
+      - "host.docker.internal:172.17.0.1"
+      - "simulator.local:172.17.0.1"
 
   dfsp2-redis:
     image: "redis:5.0.4-alpine"

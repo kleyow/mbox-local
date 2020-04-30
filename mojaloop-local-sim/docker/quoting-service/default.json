@@ -1,5 +1,5 @@
 {
-    "HOSTNAME": "http://172.17.0.1",
+    "HOSTNAME": "http://quoting-service",
     "LISTEN_ADDRESS": "0.0.0.0",
     "PORT": 3002,
     "AMOUNT": {
@@ -23,7 +23,7 @@
       "CREATE_RETRY_INTERVAL_MILLIS": 200,
       "DEBUG": false
     },
-    "SWITCH_ENDPOINT": "http://172.17.0.1:3001",
+    "SWITCH_ENDPOINT": "http://central-ledger:3001",
     "ERROR_HANDLING": {
       "includeCauseExtension": false,
       "truncateCause": true
