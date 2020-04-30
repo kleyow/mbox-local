@@ -14,10 +14,22 @@ The aim of this Document is to have a local mojaloop running with two customs DF
 
 ## Start the compose
 
-* You'll need to run this twice to fix some setup bugs with ALS
+* You'll need to run ALS twice for it to setup properly.
 
 ```
 docker-compose up
+
+Or run each of below in a new terminal for debugging
+Running the services separately in terminals is recommended
+
+docker-compose up central-ledger
+docker-compose up quoting-service
+docker-compose up ml-api-adapter
+docker-compose up central-settlement
+docker-compose up account-lookup-service
+docker-compose up dfsp1-backend
+docker-compose up dfsp2-backend
+docker-compose up simulator
 ```
 
 We need to check if account-services is running for that reason we'll execute this health request

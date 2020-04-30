@@ -1,13 +1,13 @@
 version: "3.7"
 
 networks:
-  cl-mojaloop-net:
-    name: cl-mojaloop-net
+  mojaloop-net:
+    name: mojaloop-net
 
 services:
   central-ledger:
     image: mojaloop/central-ledger:v9.5.2
-    container_name: cl_central-ledger
+    container_name: central-ledger
     command:
       - "sh"
       - "-c"
@@ -22,7 +22,7 @@ services:
       - CLEDG_SIDECAR__DISABLED=true
       - CLEDG_MONGODB__DISABLED=false
     networks:
-      - cl-mojaloop-net
+      - mojaloop-net
     depends_on:
       - mysql
       - kafka
@@ -51,9 +51,9 @@ services:
 
   quoting-service:
     image: "mojaloop/quoting-service:v8.4.0-snapshot"
-    container_name: qs_quoting-service
+    container_name: quoting-service
     networks:
-      - cl-mojaloop-net
+      - mojaloop-net
     depends_on:
       - mysql
     ports:
@@ -61,26 +61,14 @@ services:
     volumes:
       - ./docker/quoting-service/default.json:/opt/quoting-service/config/default.json
     extra_hosts:
-      - "central-ledger.local:172.17.0.1"
-      - "central-settlement.local:172.17.0.1"
-      - "ml-api-adapter.local:172.17.0.1"
-      - "account-lookup-service.local:172.17.0.1"
-      - "account-lookup-service-admin.local:172.17.0.1"
-      - "quoting-service.local:172.17.0.1"
       - "moja-simulator.local:172.17.0.1"
-      - "central-ledger:172.17.0.1"
-      - "central-settlement:172.17.0.1"
-      - "ml-api-adapter:172.17.0.1"
-      - "account-lookup-service:172.17.0.1"
-      - "account-lookup-service-admin:172.17.0.1"
-      - "quoting-service:172.17.0.1"
       - "simulator:172.17.0.1"
       - "host.docker.internal:172.17.0.1"
       - "simulator.local:172.17.0.1"
 
   ml-api-adapter:
     image: mojaloop/ml-api-adapter:v8.4.1
-    container_name: cl_ml-api-adapter
+    container_name: ml-api-adapter
     command:
       - "sh"
       - "-c"
@@ -93,7 +81,7 @@ services:
     environment:
       - LOG_LEVEL=info
     networks:
-      - cl-mojaloop-net
+      - mojaloop-net
     depends_on:
       - kafka
     healthcheck:
@@ -121,7 +109,7 @@ services:
 
   mysql:
     image: mysql/mysql-server
-    container_name: cl_mysql
+    container_name: mysql
     # Disable logging as it is far too verbose for debugging locally
     logging:
       driver: none
@@ -136,7 +124,7 @@ services:
       - MYSQL_DATABASE=${DBUSER:-central_ledger}
       - MYSQL_ALLOW_EMPTY_PASSWORD=true
     networks:
-      - cl-mojaloop-net
+      - mojaloop-net
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "mysql"]
       timeout: 20s
@@ -146,7 +134,7 @@ services:
 
   simulator:
     image: mojaloop/simulator:v9.5.0
-    container_name: cl_simulator
+    container_name: simulator
     ports:
       - "8444:8444"
     environment:
@@ -157,7 +145,7 @@ services:
       - TRANSFERS_FULFIL_RESPONSE_DISABLED=false
       - TRANSACTION_REQUESTS_ENDPOINT=http://172.17.0.1:4003
     networks:
-      - cl-mojaloop-net
+      - mojaloop-net
     healthcheck:
       test: ["CMD", "sh", "-c" ,"apk --no-cache add curl", ";", "curl", "http://172.17.0.1:8444/health"]
       timeout: 20s
@@ -183,13 +171,13 @@ services:
 
   transaction-requests-service:
     image: mojaloop/transaction-requests-service:v9.5.0
-    container_name: cl_transaction-requests-service
+    container_name: transaction-requests-service
     ports:
       - "4003:4003"
     volumes:
       - ./docker/transaction-requests-service/default.json:/opt/transaction-requests-service/config/default.json
     networks:
-      - cl-mojaloop-net
+      - mojaloop-net
     healthcheck:
       test: ["CMD", "sh", "-c" ,"apk --no-cache add curl", ";", "curl", "http://172.17.0.1:4003/health"]
       timeout: 20s
@@ -215,7 +203,7 @@ services:
 
   kafka:
     image: johnnypark/kafka-zookeeper:2.3.0
-    container_name: cl_kafka
+    container_name: kafka
     # Disable logging as it is far too verbose for debugging locally
     logging:
       driver: none
@@ -227,7 +215,7 @@ services:
     environment:
       - ZOO_LOG4J_PROP=WARN
     networks:
-      - cl-mojaloop-net
+      - mojaloop-net
     healthcheck:
       test: ["CMD" ,"/opt/kafka_2.12-2.3.0/bin/kafka-broker-api-versions.sh","--bootstrap-server","localhost:9092"]
       timeout: 20s
@@ -237,13 +225,13 @@ services:
 
   central-settlement:
     image: mojaloop/central-settlement:v8.3.0
-    container_name: cl_central-settlement
+    container_name: central-settlement
     command:
       - "sh"
       - "-c"
       - "sh /opt/wait-for/wait-for-central-settlement.sh && node src/server.js"
     networks:
-      - cl-mojaloop-net
+      - mojaloop-net
     depends_on:
       - mysql
       - kafka
@@ -255,7 +243,7 @@ services:
 
   account-lookup-service:
     image: mojaloop/account-lookup-service:v8.3.0
-    container_name: als_account-lookup-service
+    container_name: account-lookup-service
     command:
       - "sh"
       - "-c"
@@ -266,7 +254,7 @@ services:
     environment:
       - LOG_LEVEL=debug
     networks:
-      - cl-mojaloop-net
+      - mojaloop-net
     depends_on:
       - mysql-als
       - central-ledger
@@ -279,26 +267,14 @@ services:
       retries: 10
       interval: 60s
     extra_hosts:
-      - "central-ledger.local:172.17.0.1"
-      - "central-settlement.local:172.17.0.1"
-      - "ml-api-adapter.local:172.17.0.1"
-      - "account-lookup-service.local:172.17.0.1"
-      - "account-lookup-service-admin.local:172.17.0.1"
-      - "quoting-service.local:172.17.0.1"
       - "moja-simulator.local:172.17.0.1"
-      - "central-ledger:172.17.0.1"
-      - "central-settlement:172.17.0.1"
-      - "ml-api-adapter:172.17.0.1"
-      - "account-lookup-service:172.17.0.1"
-      - "account-lookup-service-admin:172.17.0.1"
-      - "quoting-service:172.17.0.1"
       - "simulator:172.17.0.1"
       - "host.docker.internal:172.17.0.1"
       - "simulator.local:172.17.0.1"
 
   mysql-als:
     image: mysql/mysql-server
-    container_name: cl_mysql_als
+    container_name: mysql_als
     ports:
       - "3306:3306"
     volumes:
@@ -309,7 +285,7 @@ services:
       - MYSQL_DATABASE=${DBUSER:-account_lookup}
       - MYSQL_ALLOW_EMPTY_PASSWORD=true
     networks:
-      - cl-mojaloop-net
+      - mojaloop-net
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "mysql-als"]
       timeout: 20s
@@ -320,36 +296,21 @@ services:
 ## DFSP 1
   dfsp1-backend:
     image: "mojaloop/sdk-mock-dfsp-backend:v8.3.0"
+    container_name: dfsp1
     env_file: ./dfsp1/backend.env
     ports:
       - "9000:3000"
     environment:
       - OUTBOUND_ENDPOINT=http://dfsp1-scheme-adapter:5002
     networks:
-      - cl-mojaloop-net
+      - mojaloop-net
     depends_on:
       - dfsp1-scheme-adapter
     restart: always
-    extra_hosts:
-      - "central-ledger.local:172.17.0.1"
-      - "central-settlement.local:172.17.0.1"
-      - "ml-api-adapter.local:172.17.0.1"
-      - "account-lookup-service.local:172.17.0.1"
-      - "account-lookup-service-admin.local:172.17.0.1"
-      - "quoting-service.local:172.17.0.1"
-      - "moja-simulator.local:172.17.0.1"
-      - "central-ledger:172.17.0.1"
-      - "central-settlement:172.17.0.1"
-      - "ml-api-adapter:172.17.0.1"
-      - "account-lookup-service:172.17.0.1"
-      - "account-lookup-service-admin:172.17.0.1"
-      - "quoting-service:172.17.0.1"
-      - "simulator:172.17.0.1"
-      - "host.docker.internal:172.17.0.1"
-      - "simulator.local:172.17.0.1"
 
   dfsp1-scheme-adapter:
     image: "mojaloop/sdk-scheme-adapter:v9.4.0"
+    container_name: dsfp1-scheme-adapter
     env_file: ./dfsp1/scheme-adapter.env
     ports:
       - "5000:5000"
@@ -362,7 +323,7 @@ services:
       - CACHE_HOST=dfsp1-redis
       - DFSP_ID=citibank
     networks:
-      - cl-mojaloop-net
+      - mojaloop-net
     depends_on:
       - dfsp1-redis
     restart: always
@@ -383,46 +344,31 @@ services:
       - "simulator:172.17.0.1"
       - "host.docker.internal:172.17.0.1"
       - "simulator.local:172.17.0.1"
-      
+
   dfsp1-redis:
     image: "redis:5.0.4-alpine"
     networks:
-      - cl-mojaloop-net
+      - mojaloop-net
     restart: always
 
  ## DFSP 2
   dfsp2-backend:
     image: "mojaloop/sdk-mock-dfsp-backend:v8.3.0"
+    container_name: dfsp2
     env_file: ./dfsp2/backend.env
     ports:
       - "10000:3000"
     environment:
       - OUTBOUND_ENDPOINT=http://dfsp2-scheme-adapter:5002
     networks:
-      - cl-mojaloop-net
+      - mojaloop-net
     depends_on:
       - dfsp2-scheme-adapter
     restart: always
-    extra_hosts:
-      - "central-ledger.local:172.17.0.1"
-      - "central-settlement.local:172.17.0.1"
-      - "ml-api-adapter.local:172.17.0.1"
-      - "account-lookup-service.local:172.17.0.1"
-      - "account-lookup-service-admin.local:172.17.0.1"
-      - "quoting-service.local:172.17.0.1"
-      - "moja-simulator.local:172.17.0.1"
-      - "central-ledger:172.17.0.1"
-      - "central-settlement:172.17.0.1"
-      - "ml-api-adapter:172.17.0.1"
-      - "account-lookup-service:172.17.0.1"
-      - "account-lookup-service-admin:172.17.0.1"
-      - "quoting-service:172.17.0.1"
-      - "simulator:172.17.0.1"
-      - "host.docker.internal:172.17.0.1"
-      - "simulator.local:172.17.0.1"
 
   dfsp2-scheme-adapter:
     image: "mojaloop/sdk-scheme-adapter:v9.4.0"
+    container_name: dfsp2-scheme-adapter
     env_file: ./dfsp2/scheme-adapter.env
     ports:
       - "7000:5000"
@@ -435,7 +381,7 @@ services:
       - CACHE_HOST=dfsp2-redis
       - DFSP_ID=bankofamerica
     networks:
-      - cl-mojaloop-net
+      - mojaloop-net
     depends_on:
       - dfsp2-redis
     restart: always
@@ -460,5 +406,5 @@ services:
   dfsp2-redis:
     image: "redis:5.0.4-alpine"
     networks:
-      - cl-mojaloop-net
+      - mojaloop-net
     restart: always
