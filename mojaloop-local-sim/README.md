@@ -27,8 +27,8 @@ docker-compose up quoting-service
 docker-compose up ml-api-adapter
 docker-compose up central-settlement
 docker-compose up account-lookup-service
-docker-compose up dfsp1-backend
-docker-compose up dfsp2-backend
+docker-compose up dfsp1-scheme-adapter dfsp1-backend
+docker-compose up dfsp2-scheme-adapter dfsp2-backend
 docker-compose up simulator
 ```
 

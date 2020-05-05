@@ -309,7 +309,7 @@ services:
     restart: always
 
   dfsp1-scheme-adapter:
-    image: "mojaloop/sdk-scheme-adapter:v9.4.0"
+    image: "mojaloop/sdk-scheme-adapter:v9.4.11"
     container_name: dsfp1-scheme-adapter
     env_file: ./dfsp1/scheme-adapter.env
     ports:
@@ -367,7 +367,7 @@ services:
     restart: always
 
   dfsp2-scheme-adapter:
-    image: "mojaloop/sdk-scheme-adapter:v9.4.0"
+    image: "mojaloop/sdk-scheme-adapter:v9.4.11"
     container_name: dfsp2-scheme-adapter
     env_file: ./dfsp2/scheme-adapter.env
     ports:
